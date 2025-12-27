@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "BlockItOut",
+  "version": "1.0.0",
+  "description": "Focus enhancement suite for Instagram and YouTube. Distraction-free modes and time management.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "*://*.instagram.com/*",
+    "*://*.youtube.com/*",
+    "*://music.youtube.com/*",
+    "*://*.google.com/*",
+    "*://*.bing.com/*",
+    "*://*.duckduckgo.com/*",
+    "*://*.yahoo.com/*"
+  ],
+  "action": {
+    "default_title": "Open BlockItOut Dashboard"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.instagram.com/*",
+        "*://*.youtube.com/*",
+        "*://music.youtube.com/*",
+        "*://*.google.com/*",
+        "*://*.bing.com/*",
+        "*://*.duckduckgo.com/*",
+        "*://*.yahoo.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "icons": {
+  "16": "icon16.png",
+  "48": "icon48.png",
+  "128": "icon128.png"
+}
+}
