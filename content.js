@@ -4,7 +4,8 @@
     const ENV = {
         IG: window.location.hostname.includes('instagram.com'),
         YT: window.location.hostname.includes('youtube.com'),
-        SEARCH: /(google|bing|duckduckgo|yahoo)/.test(window.location.hostname)
+        SEARCH: /(google|bing|duckduckgo|yahoo)/.test(window.location.hostname),
+        BLOCKED: false
     };
 
     const DEFAULTS = {
@@ -27,7 +28,10 @@
         ytTheaterMode: false,
         ytStopAutoplay: false,
         ytCleanEndScreen: false,
-        globalMono: false
+        globalMono: false,
+        globalIntentWall: false,
+        globalBreatheWall: false,
+        globalCustomSites: "instagram.com, youtube.com, x.com, twitter.com, reddit.com, tiktok.com, facebook.com"
     };
 
     let PREFS = { ...DEFAULTS };
@@ -69,17 +73,149 @@
         }
     };
 
+    class IntentWall {
+        static init() {
+            if (sessionStorage.getItem('bio_intent_passed')) return;
+
+            document.documentElement.style.overflow = 'hidden';
+            const overlay = document.createElement('div');
+            Object.assign(overlay.style, {
+                position: 'fixed', top: '0', left: '0', width: '100%', height: '100%',
+                background: 'rgba(10, 10, 10, 0.95)', backdropFilter: 'blur(30px)',
+                zIndex: '2147483647', display: 'flex', justifyContent: 'center', alignItems: 'center',
+                flexDirection: 'column', color: '#F5F5F7', fontFamily: 'sans-serif'
+            });
+
+            overlay.innerHTML = `
+                <h1 style="font-size: 32px; margin-bottom: 16px; color: #F5F5F7 !important; margin-top: 0;">Why are you here?</h1>
+                <p style="font-size: 16px; color: #A1A1A6 !important; margin-bottom: 32px; max-width: 400px; text-align: center; line-height: 1.5; margin-top: 0;">
+                    State your intent. You must type at least 10 words explaining your purpose to access this site.
+                </p>
+                <div style="position: relative; width: 400px; margin-bottom: 24px;">
+                    <textarea id="bio-intent-input" placeholder="I am here to..." style="
+                        width: 100%; height: 120px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+                        border-radius: 12px; padding: 16px; padding-bottom: 36px; color: white !important; font-size: 16px; resize: none; outline: none; box-sizing: border-box; font-family: inherit;
+                    "></textarea>
+                    <div id="bio-intent-counter" style="position: absolute; bottom: 12px; right: 16px; color: #FF5E5B; font-size: 13px; font-weight: bold;">0 / 10</div>
+                </div>
+                <div style="display: flex; gap: 16px; width: 400px;">
+                    <button id="bio-intent-cancel" style="
+                        flex: 1; padding: 16px; background: rgba(255,255,255,0.05); color: white !important; border: none; border-radius: 12px; cursor: pointer; font-size: 16px; font-weight: bold;
+                    ">Leave</button>
+                    <button id="bio-intent-submit" disabled style="
+                        flex: 1; padding: 16px; background: #FF5E5B; color: white !important; border: none; border-radius: 12px; cursor: pointer; font-size: 16px; font-weight: bold; opacity: 0.5; transition: opacity 0.2s;
+                    ">Enter</button>
+                </div>
+            `;
+
+            document.documentElement.appendChild(overlay);
+
+            const input = overlay.querySelector('#bio-intent-input');
+            const submit = overlay.querySelector('#bio-intent-submit');
+            const counter = overlay.querySelector('#bio-intent-counter');
+
+            input.addEventListener('input', () => {
+                const words = input.value.trim().split(/\s+/).filter(w => w.length > 0);
+                const uniqueWords = new Set(words.map(w => w.toLowerCase()));
+                
+                counter.innerText = `${words.length} / 10`;
+                
+                if (words.length >= 10 && uniqueWords.size >= 5) {
+                    counter.style.color = '#34C759';
+                    submit.disabled = false;
+                    submit.style.opacity = '1';
+                } else {
+                    if (words.length >= 10 && uniqueWords.size < 5) {
+                        counter.innerText = 'Stop typing gibberish.';
+                    }
+                    counter.style.color = '#FF5E5B';
+                    submit.disabled = true;
+                    submit.style.opacity = '0.5';
+                }
+            });
+
+            overlay.querySelector('#bio-intent-cancel').onclick = () => { history.back(); };
+            submit.onclick = () => {
+                sessionStorage.setItem('bio_intent_passed', 'true');
+                overlay.remove();
+                document.documentElement.style.overflow = '';
+            };
+        }
+    }
+
+    class BreatheWall {
+        static init() {
+            if (sessionStorage.getItem('bio_breathe_passed')) return;
+
+            document.documentElement.style.overflow = 'hidden';
+            const overlay = document.createElement('div');
+            Object.assign(overlay.style, {
+                position: 'fixed', top: '0', left: '0', width: '100%', height: '100%',
+                background: 'rgba(5, 5, 5, 0.98)', backdropFilter: 'blur(30px)',
+                zIndex: '2147483647', display: 'flex', justifyContent: 'center', alignItems: 'center',
+                flexDirection: 'column', color: '#F5F5F7', fontFamily: 'sans-serif'
+            });
+
+            const lines = [
+                "The algorithm just placed a bet on your attention. You're about to let it win.",
+                "You opened this on autopilot. Take a breath and break the loop.",
+                "Your brain is craving cheap dopamine. Don't give in so easily.",
+                "Stop. Ask yourself: am I here with purpose, or just escaping reality?",
+                "Every hour wasted begins with a single, mindless click.",
+                "The slot machine is spinning. Walk away before you lose the next hour.",
+                "You have a finite number of heartbeats. Do you really want to spend them here?",
+                "In 30 seconds, the feed will have you. Close it now while you still have free will."
+            ];
+
+            overlay.innerHTML = `
+                <div style="position: relative; width: 600px; height: 300px; display: flex; justify-content: center; align-items: center;">
+                    <div id="bio-breathe-circle" style="
+                        position: absolute; width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(circle, rgba(255,94,91,0.8) 0%, rgba(255,94,91,0) 70%);
+                        animation: bio-breathe 30s ease-in-out forwards;
+                    "></div>
+                    <h2 id="bio-breathe-text" style="
+                        position: relative; z-index: 10; font-size: 28px; font-weight: 700; color: #ffffff !important; margin: 0; text-shadow: 0 4px 20px rgba(0,0,0,0.8); letter-spacing: 1px; text-align: center; line-height: 1.4; opacity: 0; transition: opacity 1s ease-in-out;
+                    ">Wait...</h2>
+                </div>
+                <style>
+                    @keyframes bio-breathe {
+                        0% { transform: scale(0.5); opacity: 0.5; }
+                        50% { transform: scale(3.5); opacity: 1; }
+                        100% { transform: scale(0.5); opacity: 0.5; }
+                    }
+                </style>
+            `;
+
+            document.documentElement.appendChild(overlay);
+
+            const textEl = overlay.querySelector('#bio-breathe-text');
+            
+            setTimeout(() => { textEl.style.opacity = '1'; }, 500);
+
+            let cycle = 0;
+            const interval = setInterval(() => {
+                textEl.style.opacity = '0';
+                setTimeout(() => {
+                    textEl.innerText = lines[cycle % lines.length];
+                    textEl.style.opacity = '1';
+                    cycle++;
+                }, 1000);
+            }, 5000);
+
+            setTimeout(() => {
+                clearInterval(interval);
+                sessionStorage.setItem('bio_breathe_passed', 'true');
+                overlay.remove();
+                document.documentElement.style.overflow = '';
+            }, 30000);
+        }
+    }
+
     class SessionMonitor {
         constructor() {
             this.timer = null;
             this.pill = null;
             this.startTime = 0;
-            this.alternatives = {
-                1: ["Breathed deeply", "Looked at the sky", "Smelled a rose", "Drank water"],
-                30: ["Added a task for the day", "Closed distracting tabs", "Stretched your back"],
-                60: ["Pet your pet", "Ate a healthy snack", "Cleaned your desk", "Did 1 minute of deep breathing"],
-                3600: ["Cooked dinner", "Gone shopping", "Painted a picture", "Learned a code concept", "Gardened"]
-            };
         }
 
         init() {
@@ -117,9 +253,8 @@
         }
 
         resume() {
-            if (PREFS.igTimeMonitor) {
-                this.startTime = Date.now();
-                this.timer = setInterval(() => this.tick(), 1000);
+            if ((PREFS.igTimeMonitor && ENV.IG) || (ENV.BLOCKED && !ENV.IG && !ENV.YT)) {
+                this.start();
             }
         }
 
@@ -182,16 +317,127 @@
                 e.stopPropagation();
                 this.showRealityCheck();
             };
+            (document.body || document.documentElement).appendChild(this.pill);
+        }
+
+        getAIInsight(seconds) {
+            const minutes = Math.round(seconds / 60);
+            const hours = (minutes / 60).toFixed(1);
             
-            document.body.appendChild(this.pill);
+            if (minutes < 1) {
+                const shortInsights = [
+                    "The algorithm just placed a bet on your attention. You're about to let it win.",
+                    "You opened this on autopilot. Take a breath, break the loop, and close the tab.",
+                    "Your brain is craving cheap dopamine. Don't give in so easily.",
+                    "Stop. Ask yourself: am I here with purpose, or just escaping reality?",
+                    "Every hour wasted begins with a single, mindless click. Turn back now.",
+                    "The slot machine is spinning. Walk away before you lose the next hour.",
+                    "You have a finite number of heartbeats. Do you really want to spend them here?",
+                    "In 10 seconds, the feed will have you. Close it now while you still have free will."
+                ];
+                const text = shortInsights[Math.floor(Math.random() * shortInsights.length)];
+                return `<div style="font-size: 16px; color: #E5E5EA; line-height: 1.6; text-align: center;">${text}</div>`;
+            }
+
+            const timeStr = minutes < 60 ? `${minutes} minute${minutes !== 1 ? 's' : ''}` : `${hours} hour${hours !== "1.0" ? 's' : ''}`;
+            
+            const reflectivePrompts = [
+                `You just traded ${timeStr} of your one, finite life for pixels on a screen. Was the trade worth it?`,
+                `The algorithm is designed to steal your life, ${timeStr} at a time. And it's working.`,
+                `What uncomfortable truth are you running from? You've been hiding here for ${timeStr}.`,
+                `You will never, ever get this past ${timeStr} back. It is gone forever.`,
+                `In ten years, will you be proud that you spent ${timeStr} today doing exactly this?`,
+                `While you were scrolling for ${timeStr}, the real world kept moving without you.`,
+                `You are literally paying for this app with the limited time of your existence. That's ${timeStr} spent so far.`,
+                `Imagine the person you dream of becoming. They wouldn't have just wasted ${timeStr} here.`,
+                `Your attention is the most valuable currency on earth. You just gave away ${timeStr} of it for free.`,
+                `Did you find what you were looking for, or did you just numb yourself for ${timeStr}?`,
+                `Every minute here is a minute you steal from your own future. That's ${timeStr} stolen today.`,
+                `This ${timeStr} could have been the start of something beautiful. Instead, it was nothing.`,
+                `You are watching other people live their lives while ${timeStr} of yours slips away.`,
+                `You didn't intend to stay this long. The system won. It took ${timeStr} from you.`,
+                `Take a deep breath. Acknowledge the ${timeStr} that just passed. Now, make a better choice.`
+            ];
+
+            const actions = {
+                tiny: [
+                    "closed your eyes, taken three deep breaths, and actually felt your own existence",
+                    "stepped outside, looked up at the sky, and remembered how vast the world is",
+                    "written down one single thing you love about your life",
+                    "stretched your spine and released the physical tension you're holding",
+                    "drank a glass of water and nourished your body",
+                    "sat in absolute, uninterrupted silence to let your mind settle",
+                    "sent a text to someone you care about, just to tell them they matter",
+                    "done nothing at all, which is far better than numbing your brain",
+                    "cleared off your desk to create a space of clarity",
+                    "reminded yourself of the most important goal you have right now"
+                ],
+                short: [
+                    "read a chapter of a book that challenges how you see the world",
+                    "written a brutally honest journal entry about what you're feeling right now",
+                    "done a 10-minute meditation to regain control over your own thoughts",
+                    "taken a brisk walk, without your phone, just observing your neighborhood",
+                    "brewed a cup of tea and drank it without any distractions",
+                    "sketched or written down a completely terrible, messy, but original idea",
+                    "cleaned up your physical space to give your mind room to breathe",
+                    "done a quick, intense burst of exercise to shock your nervous system awake",
+                    "planned out your day so you don't end up back here",
+                    "learned something entirely new that makes you a slightly more interesting person"
+                ],
+                medium: [
+                    "completed a workout that left you sweating, exhausted, and incredibly proud",
+                    "called a close friend and had a conversation with real depth and laughter",
+                    "cooked a meal from scratch using real ingredients, feeding yourself properly",
+                    "gone for a long walk in nature, entirely disconnected from the digital matrix",
+                    "made undeniable, focused progress on that project you keep 'putting off'",
+                    "read 50 pages of a book, expanding your mind instead of shrinking your attention span",
+                    "learned the fundamentals of a new skill that could change your career trajectory",
+                    "deep-cleaned your living space, creating an environment that respects you",
+                    "listened to a brilliant podcast or lecture that shifted your perspective",
+                    "taken a restorative nap, genuinely resting instead of faux-resting on a feed"
+                ],
+                long: [
+                    "entered a state of deep flow and built a piece of the future you dream about",
+                    "watched a beautifully crafted film or documentary that moved you to tears",
+                    "gone to the gym and pushed your physical limits further than before",
+                    "met up with a friend in the real world, creating a memory that will actually last",
+                    "completely redesigned your living space to reflect the person you are becoming",
+                    "spent quality, undivided, deeply present time with your family",
+                    "mapped out a brutally honest, actionable plan for the next five years of your life",
+                    "created a piece of art, code, or writing that did not exist before you made it",
+                    "taken a long hike, feeling the sun on your face and the dirt under your feet",
+                    "cooked an elaborate, beautiful dinner for yourself and someone you love"
+                ]
+            };
+
+            let category = "tiny";
+            if (minutes >= 5 && minutes < 20) category = "short";
+            else if (minutes >= 20 && minutes < 60) category = "medium";
+            else if (minutes >= 60) category = "long";
+
+            const acts = actions[category];
+            const act = acts[Math.floor(Math.random() * acts.length)];
+            const reflection = reflectivePrompts[Math.floor(Math.random() * reflectivePrompts.length)];
+
+            const formats = [
+                `<div style="font-size: 16px; color: #F5F5F7; line-height: 1.6; text-align: center;">${reflection}</div>
+                 <div style="margin-top: 20px; font-size: 15px; color: #A1A1A6; text-align: center; line-height: 1.5;">Instead of this, in ${timeStr} you could have <b>${act}</b>.</div>`,
+                 
+                `<div style="font-size: 15px; color: #A1A1A6; line-height: 1.6; text-align: center;">In the exact same amount of time (${timeStr}), you could have <b>${act}</b>.</div>
+                 <div style="margin-top: 20px; font-size: 16px; color: #F5F5F7; text-align: center; line-height: 1.5;">${reflection}</div>`,
+                 
+                `<div style="font-size: 16px; color: #F5F5F7; line-height: 1.6; text-align: center;">${reflection}</div>
+                 <div style="margin-top: 20px; font-size: 15px; color: #A1A1A6; text-align: center; line-height: 1.5;">Let's be real. You could have <b>${act}</b> instead of mindlessly scrolling.</div>`,
+                 
+                `<div style="font-size: 15px; color: #A1A1A6; line-height: 1.6; text-align: center;">Fact: You had enough time to have <b>${act}</b>.</div>
+                 <div style="margin-top: 20px; font-size: 16px; color: #F5F5F7; text-align: center; line-height: 1.5;">${reflection}</div>`
+            ];
+
+            return formats[Math.floor(Math.random() * formats.length)];
         }
 
         showRealityCheck() {
             const seconds = this.getStoredSeconds();
-            const threshold = seconds > 3600 ? 3600 : (seconds > 60 ? 60 : 1);
-            const altList = this.alternatives[threshold];
-            const suggestion = altList[Math.floor(Math.random() * altList.length)];
-            const count = Math.max(1, Math.floor(seconds / threshold));
 
             const overlay = document.createElement('div');
             Object.assign(overlay.style, {
@@ -204,7 +450,7 @@
             const card = document.createElement('div');
             Object.assign(card.style, {
                 background: 'rgba(30, 15, 15, 0.6)', padding: '60px 40px', borderRadius: '32px',
-                border: '1px solid rgba(255, 255, 255, 0.08)', width: '440px', textAlign: 'center',
+                border: '1px solid rgba(255, 255, 255, 0.08)', width: '480px', textAlign: 'center',
                 boxShadow: '0 30px 80px rgba(0,0,0,0.6)', color: '#F5F5F7', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
             });
 
@@ -213,15 +459,13 @@
                 <h3 style="margin:0 0 12px 0; color:#FF5E5B; font-size:13px; text-transform:uppercase; letter-spacing:3px; font-weight:700; opacity:0.9;">Time Wasted</h3>
                 <div style="font-size:60px; font-weight:800; color:#fff; margin:0 0 32px 0; line-height:1; text-shadow: 0 0 30px rgba(255,94,91,0.2); font-variant-numeric: tabular-nums;">${this.formatTime(seconds)}</div>
                 <div style="background:rgba(255,255,255,0.03); border-radius:16px; padding:24px; margin-bottom:32px; border:1px solid rgba(255,255,255,0.05);">
-                    <p style="color:#C0C0C5; font-size:15px; line-height:1.6; margin:0;">
-                         You could have <b>${suggestion}</b> roughly ${count} times.
-                    </p>
+                    ${this.getAIInsight(seconds)}
                 </div>
                 <button id="bio-go-work" style="
                     background: linear-gradient(135deg, #FF5E5B, #FF3B30); color: #fff; border: none; width:100%;
                     padding: 20px 0; border-radius: 16px; font-size: 18px; font-weight: 700; cursor: pointer;
                     box-shadow: 0 8px 30px rgba(255, 69, 58, 0.3); transition: all 0.2s ease; letter-spacing: -0.01em;
-                ">GO TO WORK</button>
+                ">CLOSE TAB</button>
                 <div id="bio-insight-close" style="
                     margin-top: 24px; color: #666; font-size: 13px; font-weight: 500; cursor: pointer;
                     transition: 0.2s; text-decoration: none; opacity: 0.7;
@@ -230,8 +474,10 @@
             `;
             
             overlay.appendChild(card);
-            document.body.appendChild(overlay);
-            document.getElementById('bio-go-work').onclick = () => { history.back(); overlay.remove(); };
+            (document.body || document.documentElement).appendChild(overlay);
+            document.getElementById('bio-go-work').onclick = () => {
+                chrome.runtime.sendMessage({ action: "close_tab" });
+            };
             document.getElementById('bio-insight-close').onclick = () => overlay.remove();
             overlay.onclick = (e) => { if(e.target === overlay) overlay.remove(); };
         }
@@ -619,8 +865,8 @@
                 #bio-dashboard-overlay .row { display: flex; justify-content: space-between; align-items: center; }
                 #bio-dashboard-overlay .lbl { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: #F5F5F7; }
                 #bio-dashboard-overlay .desc { font-size: 13px; color: #86868B; line-height: 1.4; }
-                #bio-dashboard-overlay .switch { position: relative; width: 44px; height: 26px; cursor: pointer; display: inline-block; margin: 0; }
-                #bio-dashboard-overlay .switch input { opacity: 0; width: 0; height: 0; }
+                #bio-dashboard-overlay .switch { position: relative; width: 44px; min-width: 44px; height: 26px; cursor: pointer; display: inline-block; margin: 0; flex-shrink: 0; }
+                #bio-dashboard-overlay .switch input { opacity: 0; width: 0; height: 0; margin: 0; padding: 0; }
                 #bio-dashboard-overlay .slider {
                     position: absolute; top: 0; left: 0; right: 0; bottom: 0;
                     background-color: rgba(255, 255, 255, 0.1); border-radius: 30px; transition: .4s;
@@ -648,6 +894,13 @@
                     transition: 0.2s;
                 }
                 #bio-dashboard-overlay .btn-exit:hover { background: rgba(255,255,255,0.1); color: #F5F5F7; }
+                #bio-dashboard-overlay .bug-btn {
+                    margin-bottom: 12px; padding: 12px 16px;
+                    text-align: center; background: rgba(255,255,255,0.05); color: #86868B;
+                    border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500;
+                    line-height: 1.5; transition: 0.2s; display: block; border: 1px solid rgba(255,255,255,0.1);
+                }
+                #bio-dashboard-overlay .bug-btn:hover { background: rgba(255,255,255,0.1); color: #F5F5F7; border-color: rgba(255,255,255,0.2); }
             `;
             
             StyleInjector.add('bio-dash-styles', css);
@@ -661,6 +914,7 @@
                     <div class="nav-item ${this.state.section === 'youtube' ? 'active' : ''}" id="bio-nav-yt">▶️ YouTube</div>
                     <div class="nav-item ${this.state.section === 'global' ? 'active' : ''}" id="bio-nav-global">⚙️ Global</div>
                     <a href="https://buymeacoffee.com/vigneshrapaka" target="_blank" class="bmc-btn">Buy me a coffee ☕</a>
+                    <a href="https://forms.gle/at1r3GyYpg2B1PEd6" target="_blank" class="bug-btn">Report Bugs 🐛</a>
                     <div class="btn-exit" id="bio-btn-exit">Exit Dashboard</div>
                 </div>
                 <div class="main" id="bio-main-content"></div>
@@ -745,15 +999,28 @@
                     <p class="sub">Affects all supported platforms.</p>
                     <div class="grid">
                         ${createCard('Grayscale Mode', 'Reduce dopamine by removing all colors.', 'globalMono')}
+                        ${createCard('Intent Wall', 'Force yourself to type your intention before visiting.', 'globalIntentWall')}
+                        ${createCard('Breathe Wall', 'Force a 30s breathing exercise before entry.', 'globalBreatheWall')}
+                    </div>
+                    <div class="card" style="margin-top: 16px;">
+                        <div class="lbl">Sites to Restrict</div>
+                        <div class="desc" style="margin-bottom: 12px;">Type the websites you want to block here. You can separate them with commas or put each one on a new line.<br><br><b>Example:</b> reddit.com, twitter.com, tiktok.com</div>
+                        <textarea data-key="globalCustomSites" style="width: 100%; height: 80px; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); font-family: monospace; resize: vertical;">${PREFS.globalCustomSites}</textarea>
                     </div>
                 `;
             }
 
             content.innerHTML = html;
-            content.querySelectorAll('input').forEach(input => {
+            content.querySelectorAll('input, textarea').forEach(input => {
                 input.onchange = (e) => {
                     const key = e.target.dataset.key;
-                    PREFS[key] = e.target.checked;
+                    if (e.target.type === 'checkbox') {
+                        PREFS[key] = e.target.checked;
+                    } else if (e.target.type === 'number') {
+                        PREFS[key] = parseInt(e.target.value) || 0;
+                    } else {
+                        PREFS[key] = e.target.value;
+                    }
                     StorageManager.save(PREFS);
                 };
             });
@@ -765,6 +1032,8 @@
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (request.action === "open_dashboard") {
             Dashboard.render();
+        } else if (request.action === "trigger_reality_check") {
+            Monitor.showRealityCheck();
         }
     });
 
@@ -774,6 +1043,17 @@
     });
 
     StorageManager.load(() => {
+        const sites = PREFS.globalCustomSites.split(/[\n,]+/).map(s => s.trim().toLowerCase()).filter(s => s);
+        ENV.BLOCKED = sites.some(site => window.location.hostname.includes(site)) || ENV.IG || ENV.YT;
+
+        if (PREFS.globalIntentWall && ENV.BLOCKED) IntentWall.init();
+        if (PREFS.globalBreatheWall && ENV.BLOCKED) BreatheWall.init();
+
+        if (ENV.BLOCKED && !ENV.IG && !ENV.YT) {
+            Monitor.init();
+            Monitor.toggle(true);
+        }
+
         if (ENV.IG) {
             InstagramHandler.init();
             Monitor.init();

@@ -4,16 +4,11 @@
   "version": "1.0.0",
   "description": "Stop doomscrolling. Block YouTube Shorts, Instagram Reels, and addictive feeds to reclaim your focus. Perfect for ADHD management.",
   "permissions": [
-    "storage"
+    "storage",
+    "tabs"
   ],
   "host_permissions": [
-    "*://*.instagram.com/*",
-    "*://*.youtube.com/*",
-    "*://music.youtube.com/*",
-    "*://*.google.com/*",
-    "*://*.bing.com/*",
-    "*://*.duckduckgo.com/*",
-    "*://*.yahoo.com/*"
+    "<all_urls>"
   ],
   "action": {
     "default_title": "Open BlockItOut Dashboard"
@@ -24,13 +19,7 @@
   "content_scripts": [
     {
       "matches": [
-        "*://*.instagram.com/*",
-        "*://*.youtube.com/*",
-        "*://music.youtube.com/*",
-        "*://*.google.com/*",
-        "*://*.bing.com/*",
-        "*://*.duckduckgo.com/*",
-        "*://*.yahoo.com/*"
+        "<all_urls>"
       ],
       "js": ["content.js"],
       "run_at": "document_start"
