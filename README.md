@@ -1,10 +1,10 @@
-# 🚫 BlockItOut | Digital Noise Cancellation
+# 🚫 Block It Out - Hide Shorts, Reels & Feeds
 
 [![Status](https://img.shields.io/badge/Status-Stable-00d26a?style=for-the-badge)](https://github.com/vigneshrapaka/blockitout) [![License](https://img.shields.io/badge/License-Non--Commercial-red?style=for-the-badge)](LICENSE) [![Focus](https://img.shields.io/badge/Focus-Maximized-f09433?style=for-the-badge)](https://github.com/vigneshrapaka/blockitout)
 
 > **Algorithms are designed to be sticky. This makes them slippery.**
 
-Social media engineering is brilliant—it’s designed to interrupt your flow state and keep you scrolling. **BlockItOut** is a source-available Chrome Extension that strips away the addictive "sugar" (Shorts, Reels, Suggested Feeds) from Instagram and YouTube, leaving you with a functional tool rather than a time trap.
+Social media engineering is brilliant—it’s designed to interrupt your flow state and keep you scrolling. **Block It Out** is a source-available Chrome Extension that strips away the addictive "sugar" (Shorts, Reels, Suggested Feeds) from Instagram and YouTube, leaving you with a functional tool rather than a time trap.
 
 We don't block the sites; we just make them behave.
 
@@ -14,7 +14,7 @@ We don't block the sites; we just make them behave.
 
 Most blockers are all-or-nothing. You either block YouTube entirely (and can't watch that tutorial you need), or you keep it open and lose 2 hours to Shorts.
 
-BlockItOut sits in the middle. It’s a **DOM-modifier** that surgically removes the slot-machine mechanics while keeping the utility intact.
+Block It Out sits in the middle. It’s a **DOM-modifier** that surgically removes the slot-machine mechanics while keeping the utility intact.
 * **Developers:** It’s lightweight, vanilla JS, and runs locally.
 * **Users:** It saves your brain cells without requiring you to delete your accounts.
 
