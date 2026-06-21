@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "BlockItOut",
+  "name": "Block It Out - Hide Shorts, Reels & Feeds",
   "version": "1.0.0",
-  "description": "Focus enhancement suite for Instagram and YouTube. Distraction-free modes and time management.",
+  "description": "Stop doomscrolling. Block YouTube Shorts, Instagram Reels, and addictive feeds to reclaim your focus. Perfect for ADHD management.",
   "permissions": [
     "storage"
   ],
