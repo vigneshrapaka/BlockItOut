@@ -1,7 +1,7 @@
 chrome.action.onClicked.addListener((tab) => {
     if (tab.id) {
         chrome.tabs.sendMessage(tab.id, { action: "open_dashboard" }).catch(() => {
-            console.log("BlockItOut: script not active on this tab");
+            chrome.tabs.create({ url: "https://www.google.com/search?q=blockitout" });
         });
     }
 });

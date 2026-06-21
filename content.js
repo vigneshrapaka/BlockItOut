@@ -231,7 +231,7 @@
             
             overlay.appendChild(card);
             document.body.appendChild(overlay);
-            document.getElementById('bio-go-work').onclick = () => { window.location.href = 'about:blank'; };
+            document.getElementById('bio-go-work').onclick = () => { history.back(); overlay.remove(); };
             document.getElementById('bio-insight-close').onclick = () => overlay.remove();
             overlay.onclick = (e) => { if(e.target === overlay) overlay.remove(); };
         }
@@ -572,78 +572,67 @@
         },
 
         render() {
-            history.pushState({}, 'BlockItOut Dashboard', '/blockitout-dashboard');
+            if (document.getElementById('bio-dashboard-overlay')) return;
             
             const css = `
-                :root {
-                    --bg-root: #050202;
-                    --glass-pane: rgba(20, 10, 10, 0.7);
-                    --glass-border: rgba(255, 94, 91, 0.15);
-                    --glass-highlight: rgba(255, 94, 91, 0.25);
-                    --accent: #FF5E5B;
-                    --text-main: #F5F5F7;
-                    --text-muted: #86868B;
-                    --mesh-grad: radial-gradient(circle at 0% 0%, rgba(255, 94, 91, 0.15), transparent 40%),
-                                 radial-gradient(circle at 100% 100%, rgba(100, 20, 20, 0.2), transparent 40%);
-                }
-                * { box-sizing: border-box; }
-                body {
-                    margin: 0; padding: 0; height: 100vh; width: 100vw; overflow: hidden;
-                    background: var(--bg-root); background-image: var(--mesh-grad);
+                #bio-dashboard-overlay {
+                    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+                    z-index: 2147483647; background: #050202; color: #F5F5F7;
                     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-                    color: var(--text-main); display: flex;
+                    display: flex; box-sizing: border-box; text-align: left;
                 }
-                .sidebar {
-                    width: 280px; height: 100%; border-right: 1px solid var(--glass-border);
+                #bio-dashboard-overlay * { box-sizing: border-box; font-family: inherit; }
+                #bio-dashboard-overlay .sidebar {
+                    width: 280px; height: 100%; border-right: 1px solid rgba(255, 94, 91, 0.15);
                     background: rgba(10, 5, 5, 0.6); backdrop-filter: blur(50px);
                     padding: 40px 20px; display: flex; flex-direction: column;
                 }
-                .logo { 
+                #bio-dashboard-overlay .logo { 
                     font-size: 24px; font-weight: 800; letter-spacing: -0.02em; 
                     margin-bottom: 40px; padding-left: 10px;
                     background: linear-gradient(135deg, #FF5E5B, #ffb3b3);
                     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
                 }
-                .nav-item {
+                #bio-dashboard-overlay .nav-item {
                     padding: 14px 18px; border-radius: 12px; margin-bottom: 8px;
-                    cursor: pointer; color: var(--text-muted); font-weight: 500; font-size: 15px;
+                    cursor: pointer; color: #86868B; font-weight: 500; font-size: 15px;
                     transition: all 0.2s; display: flex; align-items: center; gap: 12px;
                 }
-                .nav-item:hover { background: rgba(255, 94, 91, 0.05); color: var(--text-main); }
-                .nav-item.active { 
-                    background: rgba(255, 94, 91, 0.15); color: var(--accent); 
+                #bio-dashboard-overlay .nav-item:hover { background: rgba(255, 94, 91, 0.05); color: #F5F5F7; }
+                #bio-dashboard-overlay .nav-item.active { 
+                    background: rgba(255, 94, 91, 0.15); color: #FF5E5B; 
                     box-shadow: 0 0 0 1px rgba(255, 94, 91, 0.2) inset;
                 }
-                .main { flex: 1; padding: 60px 80px; overflow-y: auto; }
-                h2 { font-size: 32px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.02em; }
-                p.sub { color: var(--text-muted); margin-bottom: 40px; font-size: 16px; }
-                .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
-                .card {
-                    background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border);
+                #bio-dashboard-overlay .main { flex: 1; padding: 60px 80px; overflow-y: auto; background-image: radial-gradient(circle at 0% 0%, rgba(255, 94, 91, 0.15), transparent 40%), radial-gradient(circle at 100% 100%, rgba(100, 20, 20, 0.2), transparent 40%); }
+                #bio-dashboard-overlay h2 { font-size: 32px; font-weight: 700; margin: 0 0 10px 0; letter-spacing: -0.02em; color: #F5F5F7; line-height: 1.2; }
+                #bio-dashboard-overlay p.sub { color: #86868B; margin: 0 0 40px 0; font-size: 16px; }
+                #bio-dashboard-overlay .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+                #bio-dashboard-overlay .card {
+                    background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 94, 91, 0.15);
                     border-radius: 20px; padding: 24px; transition: 0.3s;
                     position: relative; overflow: hidden;
                 }
-                .card:hover { 
+                #bio-dashboard-overlay .card:hover { 
                     background: rgba(255, 255, 255, 0.05); transform: translateY(-2px); 
-                    border-color: var(--glass-highlight); 
+                    border-color: rgba(255, 94, 91, 0.25); 
                 }
-                .row { display: flex; justify-content: space-between; align-items: center; }
-                .lbl { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-                .desc { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
-                .switch { position: relative; width: 44px; height: 26px; cursor: pointer; }
-                .switch input { opacity: 0; width: 0; height: 0; }
-                .slider {
+                #bio-dashboard-overlay .row { display: flex; justify-content: space-between; align-items: center; }
+                #bio-dashboard-overlay .lbl { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: #F5F5F7; }
+                #bio-dashboard-overlay .desc { font-size: 13px; color: #86868B; line-height: 1.4; }
+                #bio-dashboard-overlay .switch { position: relative; width: 44px; height: 26px; cursor: pointer; display: inline-block; margin: 0; }
+                #bio-dashboard-overlay .switch input { opacity: 0; width: 0; height: 0; }
+                #bio-dashboard-overlay .slider {
                     position: absolute; top: 0; left: 0; right: 0; bottom: 0;
                     background-color: rgba(255, 255, 255, 0.1); border-radius: 30px; transition: .4s;
                 }
-                .slider:before {
+                #bio-dashboard-overlay .slider:before {
                     position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px;
                     background-color: white; border-radius: 50%; transition: .4s;
                     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
                 }
-                input:checked + .slider { background-color: var(--accent); }
-                input:checked + .slider:before { transform: translateX(18px); }
-                .bmc-btn {
+                #bio-dashboard-overlay input:checked + .slider { background-color: #FF5E5B; }
+                #bio-dashboard-overlay input:checked + .slider:before { transform: translateX(18px); }
+                #bio-dashboard-overlay .bmc-btn {
                     margin-top: auto; margin-bottom: 12px; padding: 12px 16px;
                     text-align: center; background: #FFDD00; color: #000000;
                     border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 700;
@@ -651,47 +640,53 @@
                     transition: 0.2s; display: block;
                     box-shadow: 0 2px 10px rgba(255, 221, 0, 0.3);
                 }
-                .bmc-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255, 221, 0, 0.4); }
-                .btn-exit {
+                #bio-dashboard-overlay .bmc-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255, 221, 0, 0.4); }
+                #bio-dashboard-overlay .btn-exit {
                     padding: 14px; text-align: center;
-                    background: rgba(255,255,255,0.05); color: var(--text-muted);
+                    background: rgba(255,255,255,0.05); color: #86868B;
                     border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 500;
                     transition: 0.2s;
                 }
-                .btn-exit:hover { background: rgba(255,255,255,0.1); color: var(--text-main); }
+                #bio-dashboard-overlay .btn-exit:hover { background: rgba(255,255,255,0.1); color: #F5F5F7; }
             `;
             
-            document.title = 'BlockItOut Dashboard';
-            document.head.innerHTML = ''; 
             StyleInjector.add('bio-dash-styles', css);
             
-            document.body.innerHTML = `
+            const overlay = document.createElement('div');
+            overlay.id = 'bio-dashboard-overlay';
+            overlay.innerHTML = `
                 <div class="sidebar">
                     <div class="logo">BlockItOut</div>
-                    <div class="nav-item ${this.state.section === 'instagram' ? 'active' : ''}" id="nav-ig">📸 Instagram</div>
-                    <div class="nav-item ${this.state.section === 'youtube' ? 'active' : ''}" id="nav-yt">▶️ YouTube</div>
-                    <div class="nav-item ${this.state.section === 'global' ? 'active' : ''}" id="nav-global">⚙️ Global</div>
+                    <div class="nav-item ${this.state.section === 'instagram' ? 'active' : ''}" id="bio-nav-ig">📸 Instagram</div>
+                    <div class="nav-item ${this.state.section === 'youtube' ? 'active' : ''}" id="bio-nav-yt">▶️ YouTube</div>
+                    <div class="nav-item ${this.state.section === 'global' ? 'active' : ''}" id="bio-nav-global">⚙️ Global</div>
                     <a href="https://buymeacoffee.com/vigneshrapaka" target="_blank" class="bmc-btn">Buy me a coffee ☕</a>
-                    <div class="btn-exit" id="btn-exit">Exit Dashboard</div>
+                    <div class="btn-exit" id="bio-btn-exit">Exit Dashboard</div>
                 </div>
-                <div class="main" id="main-content"></div>
+                <div class="main" id="bio-main-content"></div>
             `;
+            
+            document.body.appendChild(overlay);
+            document.body.style.overflow = 'hidden';
 
             this.bindEvents();
             this.renderContent();
         },
 
         bindEvents() {
-            document.getElementById('nav-ig').onclick = () => { this.state.section = 'instagram'; this.renderContent(); };
-            document.getElementById('nav-yt').onclick = () => { this.state.section = 'youtube'; this.renderContent(); };
-            document.getElementById('nav-global').onclick = () => { this.state.section = 'global'; this.renderContent(); };
-            document.getElementById('btn-exit').onclick = () => window.location.reload();
+            document.getElementById('bio-nav-ig').onclick = () => { this.state.section = 'instagram'; this.renderContent(); };
+            document.getElementById('bio-nav-yt').onclick = () => { this.state.section = 'youtube'; this.renderContent(); };
+            document.getElementById('bio-nav-global').onclick = () => { this.state.section = 'global'; this.renderContent(); };
+            document.getElementById('bio-btn-exit').onclick = () => {
+                document.getElementById('bio-dashboard-overlay').remove();
+                document.body.style.overflow = '';
+            };
         },
 
         renderContent() {
-            const content = document.getElementById('main-content');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            const map = { instagram: 'nav-ig', youtube: 'nav-yt', global: 'nav-global' };
+            const content = document.getElementById('bio-main-content');
+            document.querySelectorAll('#bio-dashboard-overlay .nav-item').forEach(n => n.classList.remove('active'));
+            const map = { instagram: 'bio-nav-ig', youtube: 'bio-nav-yt', global: 'bio-nav-global' };
             document.getElementById(map[this.state.section]).classList.add('active');
 
             let html = '';
@@ -758,11 +753,9 @@
             content.querySelectorAll('input').forEach(input => {
                 input.onchange = (e) => {
                     const key = e.target.dataset.key;
-                    settingsObj[key] = e.target.checked;
-                    StorageManager.save(settingsObj);
+                    PREFS[key] = e.target.checked;
+                    StorageManager.save(PREFS);
                 };
-                
-                var settingsObj = PREFS; 
             });
         }
     };

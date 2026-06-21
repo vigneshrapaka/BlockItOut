@@ -7,9 +7,11 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
 2. RESTRICTIONS
 The following actions are strictly prohibited without the express written permission of the author:
-* Redistribution: You may not redistribute, repackage, re-upload, or host this Software (modified or unmodified) on any other platform, server, store, or repository.
+* Redistribution: You may not redistribute, repackage, re-upload, or host this Software (modified or unmodified) on any other platform, server, store, or repository (including the Chrome Web Store).
 * Commercial Use: You may not use this Software, in whole or in part, for any commercial purpose, product, service, or business operation.
 * Modification & Derivation: You may not modify, decompile, reverse engineer, or create derivative works based on this Software for the purpose of redistribution or commercial gain.
+* White-labeling & Rebranding: You may not rebrand, rename, or pass off this Software (or modified versions of it) as your own original creation.
+* Monetization: You may not place this Software behind a paywall, include it as part of a paid subscription, or inject advertisements or tracking scripts for revenue generation.
 
 3. COMMERCIAL LICENSING
 Any commercial implementation, redistribution, or business use of this Software requires a separate commercial license and payment of royalties. To obtain a commercial license, please contact the author via:

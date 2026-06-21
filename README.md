@@ -4,7 +4,7 @@
 
 > **Algorithms are designed to be sticky. This makes them slippery.**
 
-Social media engineering is brilliant—it’s designed to interrupt your flow state and keep you scrolling. **BlockItOut** is an open-source Chrome Extension that strips away the addictive "sugar" (Shorts, Reels, Suggested Feeds) from Instagram and YouTube, leaving you with a functional tool rather than a time trap.
+Social media engineering is brilliant—it’s designed to interrupt your flow state and keep you scrolling. **BlockItOut** is a source-available Chrome Extension that strips away the addictive "sugar" (Shorts, Reels, Suggested Feeds) from Instagram and YouTube, leaving you with a functional tool rather than a time trap.
 
 We don't block the sites; we just make them behave.
 
