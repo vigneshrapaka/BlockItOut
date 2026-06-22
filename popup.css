@@ -129,7 +129,7 @@ h1 {
 }
 .site-input-row input:focus { box-shadow: 3px 3px 0px rgba(0,0,0,1); }
 
-.site-list { list-style: none; padding: 0; margin: 12px 0 0 0; max-height: 140px; overflow-y: auto; }
+.site-list { list-style: none; padding: 0; margin: 12px 0 0 0; max-height: 250px; overflow-y: auto; }
 .site-list li {
   display: flex; justify-content: space-between; align-items: center;
   background: white; border: 2px solid #000; border-radius: 4px;

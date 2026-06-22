@@ -23,7 +23,19 @@ const DEFAULTS = {
     globalMono: false,
     globalIntentWall: true,
     globalBreatheWall: true,
-    globalCustomSites: "reddit.com, twitter.com, x.com, tiktok.com, facebook.com"
+    globalHardBlock: false,
+    globalCustomSites: "twitter.com, x.com, tiktok.com, facebook.com, linkedin.com, snapchat.com, instagram.com, netflix.com, hulu.com, disneyplus.com, primevideo.com, max.com, vimeo.com, dailymotion.com, twitch.tv, youtube.com, reddit.com, quora.com, 4chan.org, 9gag.com, tumblr.com, pinterest.com"
+};
+
+const SITE_CATEGORIES = {
+    "Socials": ["twitter.com", "x.com", "tiktok.com", "facebook.com", "linkedin.com", "snapchat.com", "instagram.com"],
+    "Streaming": ["netflix.com", "hulu.com", "disneyplus.com", "primevideo.com", "max.com", "vimeo.com", "dailymotion.com", "twitch.tv", "youtube.com"],
+    "Forums": ["reddit.com", "quora.com", "4chan.org", "9gag.com", "tumblr.com", "pinterest.com"],
+    "News": ["nytimes.com", "cnn.com", "foxnews.com", "theverge.com", "techcrunch.com", "news.ycombinator.com", "tmz.com", "buzzfeed.com", "dailymail.co.uk"],
+    "Shopping": ["amazon.com", "ebay.com", "temu.com", "aliexpress.com", "shein.com", "asos.com", "zara.com", "etsy.com"],
+    "Gaming": ["roblox.com", "crazygames.com", "miniclip.com", "ign.com", "polygon.com"],
+    "Dating": ["tinder.com", "bumble.com", "okcupid.com", "hinge.co"],
+    "Webtoons": ["crunchyroll.com", "webtoons.com", "mangadex.org"]
 };
 
 let PREFS = { ...DEFAULTS };
@@ -43,6 +55,49 @@ document.addEventListener('DOMContentLoaded', () => {
         renderContent('instagram');
         bindTabs();
     });
+
+    const btnExport = document.getElementById('btn-export');
+    const btnImport = document.getElementById('btn-import');
+    const fileInput = document.getElementById('import-file');
+
+    if (btnExport) {
+        btnExport.addEventListener('click', () => {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(PREFS, null, 2));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", "blockitout-settings.json");
+            document.body.appendChild(dlAnchorElem);
+            dlAnchorElem.click();
+            dlAnchorElem.remove();
+        });
+    }
+
+    if (btnImport && fileInput) {
+        btnImport.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try {
+                    const imported = JSON.parse(ev.target.result);
+                    if (typeof imported === 'object' && imported !== null) {
+                        PREFS = { ...PREFS, ...imported };
+                        saveSettings();
+                        const activeTab = document.querySelector('.tab.active').dataset.tab;
+                        renderContent(activeTab);
+                        alert("Settings imported successfully!");
+                    } else {
+                        alert("Invalid JSON format.");
+                    }
+                } catch (err) {
+                    alert("Failed to parse settings file.");
+                }
+            };
+            reader.readAsText(file);
+            fileInput.value = '';
+        });
+    }
 });
 
 function bindTabs() {
@@ -128,6 +183,7 @@ function renderContent(section) {
         html = `
             ${sectionHeader('Mindfulness Walls')}
             <div class="card-group">
+                ${createRow('Hard Block', 'Completely block access.', 'globalHardBlock')}
                 ${createRow('Intent Wall', 'Force an intention before visiting.', 'globalIntentWall')}
                 ${createRow('Breathe Wall', 'Force a 30s delay before entry.', 'globalBreatheWall')}
             </div>
@@ -137,8 +193,12 @@ function renderContent(section) {
             </div>
             ${sectionHeader('Restricted Sites')}
             <div class="card-group" style="padding: 16px; display: block;">
+                <div class="lbl">Quick Category Toggles</div>
+                <div class="desc" style="margin-bottom: 8px;">Quickly block or unblock entire categories.</div>
+                <div id="category-toggles" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px;"></div>
+                <div style="height: 1px; background: #eee; margin-bottom: 16px;"></div>
                 <div class="lbl">Sites to Restrict</div>
-                <div class="desc" style="margin-bottom: 12px;">Add websites you want to block.</div>
+                <div class="desc" style="margin-bottom: 12px;">Add specific websites you want to block.</div>
                 <div class="site-input-row">
                     <input type="text" id="domain-input" placeholder="e.g. reddit.com">
                     <button id="add-domain-btn" class="btn-dark">Add</button>
@@ -181,6 +241,41 @@ function renderContent(section) {
 
         if (section === 'global') {
             renderList();
+            
+            const toggleContainer = document.getElementById('category-toggles');
+            if (toggleContainer) {
+                const currentSites = PREFS.globalCustomSites.split(/[\n,]+/).map(s => s.trim().toLowerCase()).filter(s => s);
+                
+                Object.entries(SITE_CATEGORIES).forEach(([name, domains]) => {
+                    const isActive = domains.every(d => currentSites.includes(d));
+                    const btn = document.createElement('button');
+                    btn.textContent = (isActive ? "- " : "+ ") + name;
+                    btn.style.cssText = `
+                        padding: 6px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; border: 2px solid #000;
+                        background: ${isActive ? '#000' : '#fff'}; color: ${isActive ? '#fff' : '#000'};
+                        transition: all 0.1s; box-shadow: 2px 2px 0px #000;
+                    `;
+                    btn.onmouseover = () => { btn.style.transform = 'translate(-1px, -1px)'; btn.style.boxShadow = '3px 3px 0px #000'; };
+                    btn.onmouseout = () => { btn.style.transform = 'translate(0, 0)'; btn.style.boxShadow = '2px 2px 0px #000'; };
+                    btn.onmousedown = () => { btn.style.transform = 'translate(2px, 2px)'; btn.style.boxShadow = '0px 0px 0px #000'; };
+                    btn.onmouseup = () => { btn.style.transform = 'translate(-1px, -1px)'; btn.style.boxShadow = '3px 3px 0px #000'; };
+                    
+                    btn.onclick = () => {
+                        let current = PREFS.globalCustomSites.split(/[\n,]+/).map(s => s.trim().toLowerCase()).filter(s => s);
+                        let newSites = new Set(current);
+                        if (isActive) {
+                            domains.forEach(d => newSites.delete(d));
+                        } else {
+                            domains.forEach(d => newSites.add(d));
+                        }
+                        PREFS.globalCustomSites = Array.from(newSites).join(', ');
+                        saveSettings();
+                        renderContent('global');
+                    };
+                    toggleContainer.appendChild(btn);
+                });
+            }
+
             const input = document.getElementById('domain-input');
             const btn = document.getElementById('add-domain-btn');
             

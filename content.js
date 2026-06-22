@@ -30,7 +30,8 @@
         globalMono: false,
         globalIntentWall: false,
         globalBreatheWall: false,
-        globalCustomSites: "reddit.com, twitter.com, x.com, tiktok.com, facebook.com"
+        globalHardBlock: false,
+        globalCustomSites: "twitter.com, x.com, tiktok.com, facebook.com, linkedin.com, snapchat.com, instagram.com, netflix.com, hulu.com, disneyplus.com, primevideo.com, max.com, vimeo.com, dailymotion.com, twitch.tv, youtube.com, reddit.com, quora.com, 4chan.org, 9gag.com, tumblr.com, pinterest.com"
     };
 
     let PREFS = { ...DEFAULTS };
@@ -151,6 +152,31 @@
                 overlay.remove();
                 document.documentElement.style.overflow = '';
             };
+        }
+    }
+
+    class HardBlock {
+        static init() {
+            document.documentElement.style.overflow = 'hidden';
+            const overlay = document.createElement('div');
+            Object.assign(overlay.style, {
+                position: 'fixed', top: '0', left: '0', width: '100%', height: '100%',
+                background: '#000000',
+                zIndex: '2147483647', display: 'flex', justifyContent: 'center', alignItems: 'center',
+                flexDirection: 'column', color: '#ffffff', fontFamily: "'Inter', system-ui, sans-serif"
+            });
+            overlay.innerHTML = `
+                <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                    <div style="font-size:64px; margin-bottom:24px;">🚫</div>
+                    <h1 style="font-size: 32px; font-weight: 800; margin: 0 0 16px 0; color: #ffffff !important;">Site Blocked</h1>
+                    <p style="font-size: 16px; color: #aaaaaa !important; margin-bottom: 32px; font-weight: 600;">You have hard-blocked this website.</p>
+                    <button id="bio-hardblock-leave" style="
+                        background: #ffffff; color: #000000 !important; border: none; padding: 16px 32px; font-size: 16px; font-weight: 800; border-radius: 4px; cursor: pointer; transition: transform 0.1s; box-shadow: 4px 4px 0px rgba(255,255,255,0.3);
+                    " onmouseover="this.style.transform='translate(-2px,-2px)'; this.style.boxShadow='6px 6px 0px rgba(255,255,255,0.3)';" onmouseout="this.style.transform='translate(0,0)'; this.style.boxShadow='4px 4px 0px rgba(255,255,255,0.3)';">Leave Site</button>
+                </div>
+            `;
+            document.documentElement.appendChild(overlay);
+            overlay.querySelector('#bio-hardblock-leave').onclick = () => { history.back(); window.close(); };
         }
     }
 
@@ -828,8 +854,12 @@
         const sites = PREFS.globalCustomSites.split(/[\n,]+/).map(s => s.trim().toLowerCase()).filter(s => s);
         ENV.BLOCKED = sites.some(site => window.location.hostname.includes(site)) || ENV.IG || ENV.YT;
 
-        if (PREFS.globalIntentWall && ENV.BLOCKED) IntentWall.init();
-        if (PREFS.globalBreatheWall && ENV.BLOCKED) BreatheWall.init();
+        if (PREFS.globalHardBlock && ENV.BLOCKED) {
+            HardBlock.init();
+        } else {
+            if (PREFS.globalIntentWall && ENV.BLOCKED) IntentWall.init();
+            if (PREFS.globalBreatheWall && ENV.BLOCKED) BreatheWall.init();
+        }
 
         if (ENV.BLOCKED && !ENV.IG && !ENV.YT) {
             Monitor.init();

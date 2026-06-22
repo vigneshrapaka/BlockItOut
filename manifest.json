@@ -5,7 +5,7 @@
   "description": "Stop doomscrolling. Block YouTube Shorts, Instagram Reels, and addictive feeds to reclaim your focus. Perfect for ADHD management.",
   "permissions": [
     "storage",
-    "tabs"
+    "activeTab"
   ],
   "host_permissions": [
     "<all_urls>"
