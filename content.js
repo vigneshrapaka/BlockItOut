@@ -4,7 +4,6 @@
     const ENV = {
         IG: window.location.hostname.includes('instagram.com'),
         YT: window.location.hostname.includes('youtube.com'),
-        SEARCH: /(google|bing|duckduckgo|yahoo)/.test(window.location.hostname),
         BLOCKED: false
     };
 
@@ -31,7 +30,7 @@
         globalMono: false,
         globalIntentWall: false,
         globalBreatheWall: false,
-        globalCustomSites: "instagram.com, youtube.com, x.com, twitter.com, reddit.com, tiktok.com, facebook.com"
+        globalCustomSites: "reddit.com, twitter.com, x.com, tiktok.com, facebook.com"
     };
 
     let PREFS = { ...DEFAULTS };
@@ -81,30 +80,34 @@
             const overlay = document.createElement('div');
             Object.assign(overlay.style, {
                 position: 'fixed', top: '0', left: '0', width: '100%', height: '100%',
-                background: 'rgba(10, 10, 10, 0.95)', backdropFilter: 'blur(30px)',
+                background: 'rgba(244, 244, 240, 0.95)',
+                backgroundImage: 'radial-gradient(#d1d1d1 1px, transparent 0)',
+                backgroundSize: '10px 10px',
                 zIndex: '2147483647', display: 'flex', justifyContent: 'center', alignItems: 'center',
-                flexDirection: 'column', color: '#F5F5F7', fontFamily: 'sans-serif'
+                flexDirection: 'column', color: '#000000', fontFamily: "'Inter', system-ui, sans-serif"
             });
 
             overlay.innerHTML = `
-                <h1 style="font-size: 32px; margin-bottom: 16px; color: #F5F5F7 !important; margin-top: 0;">Why are you here?</h1>
-                <p style="font-size: 16px; color: #A1A1A6 !important; margin-bottom: 32px; max-width: 400px; text-align: center; line-height: 1.5; margin-top: 0;">
-                    State your intent. You must type at least 10 words explaining your purpose to access this site.
-                </p>
-                <div style="position: relative; width: 400px; margin-bottom: 24px;">
-                    <textarea id="bio-intent-input" placeholder="I am here to..." style="
-                        width: 100%; height: 120px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-                        border-radius: 12px; padding: 16px; padding-bottom: 36px; color: white !important; font-size: 16px; resize: none; outline: none; box-sizing: border-box; font-family: inherit;
-                    "></textarea>
-                    <div id="bio-intent-counter" style="position: absolute; bottom: 12px; right: 16px; color: #FF5E5B; font-size: 13px; font-weight: bold;">0 / 10</div>
-                </div>
-                <div style="display: flex; gap: 16px; width: 400px;">
-                    <button id="bio-intent-cancel" style="
-                        flex: 1; padding: 16px; background: rgba(255,255,255,0.05); color: white !important; border: none; border-radius: 12px; cursor: pointer; font-size: 16px; font-weight: bold;
-                    ">Leave</button>
-                    <button id="bio-intent-submit" disabled style="
-                        flex: 1; padding: 16px; background: #FF5E5B; color: white !important; border: none; border-radius: 12px; cursor: pointer; font-size: 16px; font-weight: bold; opacity: 0.5; transition: opacity 0.2s;
-                    ">Enter</button>
+                <div style="background: #ffffff; padding: 40px; border: 2px solid #000; box-shadow: 8px 8px 0px #000; border-radius: 4px; display: flex; flex-direction: column; align-items: center;">
+                    <h1 style="font-size: 32px; margin-bottom: 16px; color: #000000 !important; margin-top: 0; font-weight: 800;">Why are you here?</h1>
+                    <p style="font-size: 16px; color: #555555 !important; margin-bottom: 32px; max-width: 400px; text-align: center; line-height: 1.5; margin-top: 0; font-weight: 600;">
+                        State your intent. You must type at least 10 words explaining your purpose to access this site.
+                    </p>
+                    <div style="position: relative; width: 400px; margin-bottom: 24px;">
+                        <textarea id="bio-intent-input" placeholder="I am here to..." style="
+                            width: 100%; height: 120px; background: #ffffff; border: 2px solid #000; box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1);
+                            border-radius: 4px; padding: 16px; padding-bottom: 36px; color: #000000 !important; font-size: 16px; resize: none; outline: none; box-sizing: border-box; font-family: inherit; font-weight: 600;
+                        "></textarea>
+                        <div id="bio-intent-counter" style="position: absolute; bottom: 12px; right: 16px; color: #555555; font-size: 13px; font-weight: 800;">0 / 10</div>
+                    </div>
+                    <div style="display: flex; gap: 16px; width: 400px;">
+                        <button id="bio-intent-cancel" style="
+                            flex: 1; padding: 16px; background: #ffffff; color: #000000 !important; border: 2px solid #000000; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: 800; box-shadow: 4px 4px 0px #000; transition: transform 0.1s, box-shadow 0.1s;
+                        " onmouseover="this.style.transform='translate(-2px,-2px)';this.style.boxShadow='6px 6px 0px #000000'" onmouseout="this.style.transform='translate(0,0)';this.style.boxShadow='4px 4px 0px #000000'" onmousedown="this.style.transform='translate(4px,4px)';this.style.boxShadow='0px 0px 0px #000000'" onmouseup="this.style.transform='translate(-2px,-2px)';this.style.boxShadow='6px 6px 0px #000000'">Leave</button>
+                        <button id="bio-intent-submit" disabled style="
+                            flex: 1; padding: 16px; background: #000000; color: #ffffff !important; border: 2px solid #000000; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: 800; opacity: 0.5; transition: opacity 0.2s, transform 0.1s, box-shadow 0.1s; box-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+                        ">Enter</button>
+                    </div>
                 </div>
             `;
 
@@ -121,16 +124,24 @@
                 counter.innerText = `${words.length} / 10`;
                 
                 if (words.length >= 10 && uniqueWords.size >= 5) {
-                    counter.style.color = '#34C759';
+                    counter.style.color = '#000000';
                     submit.disabled = false;
                     submit.style.opacity = '1';
+                    submit.onmouseover = () => { submit.style.transform='translate(-2px,-2px)'; submit.style.boxShadow='6px 6px 0px rgba(0,0,0,1)'; };
+                    submit.onmouseout = () => { submit.style.transform='translate(0,0)'; submit.style.boxShadow='4px 4px 0px rgba(0,0,0,1)'; };
+                    submit.onmousedown = () => { submit.style.transform='translate(4px,4px)'; submit.style.boxShadow='0px 0px 0px rgba(0,0,0,1)'; };
+                    submit.onmouseup = () => { submit.style.transform='translate(-2px,-2px)'; submit.style.boxShadow='6px 6px 0px rgba(0,0,0,1)'; };
                 } else {
                     if (words.length >= 10 && uniqueWords.size < 5) {
                         counter.innerText = 'Stop typing gibberish.';
                     }
-                    counter.style.color = '#FF5E5B';
+                    counter.style.color = '#555555';
                     submit.disabled = true;
                     submit.style.opacity = '0.5';
+                    submit.onmouseover = null;
+                    submit.onmouseout = null;
+                    submit.onmousedown = null;
+                    submit.onmouseup = null;
                 }
             });
 
@@ -151,37 +162,51 @@
             const overlay = document.createElement('div');
             Object.assign(overlay.style, {
                 position: 'fixed', top: '0', left: '0', width: '100%', height: '100%',
-                background: 'rgba(5, 5, 5, 0.98)', backdropFilter: 'blur(30px)',
+                background: 'rgba(244, 244, 240, 0.98)',
+                backgroundImage: 'radial-gradient(#d1d1d1 1px, transparent 0)',
+                backgroundSize: '10px 10px',
                 zIndex: '2147483647', display: 'flex', justifyContent: 'center', alignItems: 'center',
-                flexDirection: 'column', color: '#F5F5F7', fontFamily: 'sans-serif'
+                flexDirection: 'column', color: '#000000', fontFamily: "'Inter', system-ui, sans-serif"
             });
 
             const lines = [
-                "The algorithm just placed a bet on your attention. You're about to let it win.",
-                "You opened this on autopilot. Take a breath and break the loop.",
-                "Your brain is craving cheap dopamine. Don't give in so easily.",
-                "Stop. Ask yourself: am I here with purpose, or just escaping reality?",
-                "Every hour wasted begins with a single, mindless click.",
-                "The slot machine is spinning. Walk away before you lose the next hour.",
-                "You have a finite number of heartbeats. Do you really want to spend them here?",
-                "In 30 seconds, the feed will have you. Close it now while you still have free will."
+                "Breathe in deeply...",
+                "Breathe out. The algorithm wants your attention.",
+                "Breathe in...",
+                "Breathe out. Break the autopilot loop.",
+                "Breathe in...",
+                "Breathe out. Are you here with purpose?",
+                "Breathe in...",
+                "Breathe out. Your time is finite."
             ];
 
             overlay.innerHTML = `
-                <div style="position: relative; width: 600px; height: 300px; display: flex; justify-content: center; align-items: center;">
-                    <div id="bio-breathe-circle" style="
-                        position: absolute; width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(circle, rgba(255,94,91,0.8) 0%, rgba(255,94,91,0) 70%);
-                        animation: bio-breathe 30s ease-in-out forwards;
-                    "></div>
+                <!-- The Breathing Circle (Background) -->
+                <div id="bio-breathe-circle" style="
+                    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                    border-radius: 50%; border-style: solid; border-color: #000; background: #ffffff; box-sizing: border-box;
+                    animation: bio-breathe 10s ease-in-out infinite; z-index: 1;
+                "></div>
+                
+                <!-- The Content (Foreground) -->
+                <div style="position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px;">
+                    
                     <h2 id="bio-breathe-text" style="
-                        position: relative; z-index: 10; font-size: 28px; font-weight: 700; color: #ffffff !important; margin: 0; text-shadow: 0 4px 20px rgba(0,0,0,0.8); letter-spacing: 1px; text-align: center; line-height: 1.4; opacity: 0; transition: opacity 1s ease-in-out;
-                    ">Wait...</h2>
+                        font-size: 26px; font-weight: 800; color: #000000 !important; margin: 0; letter-spacing: -0.02em; text-align: center; line-height: 1.4; opacity: 0; transition: opacity 0.8s ease-in-out; max-width: 260px;
+                    ">${lines[0]}</h2>
+                    
+                    <button id="bio-leave-btn" style="
+                        background: #ffffff; border: 2px solid #000; color: #000; padding: 12px 32px; font-size: 14px; font-weight: 800; border-radius: 6px; cursor: pointer;
+                        box-shadow: 4px 4px 0px #000; transition: transform 0.1s, box-shadow 0.1s; display: inline-flex; justify-content: center; align-items: center; letter-spacing: 0.5px; text-transform: uppercase;
+                    " onmouseover="this.style.transform='translate(-2px,-2px)';this.style.boxShadow='6px 6px 0px #000'" onmouseout="this.style.transform='translate(0,0)';this.style.boxShadow='4px 4px 0px #000'" onmousedown="this.style.transform='translate(4px,4px)';this.style.boxShadow='0px 0px 0px #000'" onmouseup="this.style.transform='translate(-2px,-2px)';this.style.boxShadow='6px 6px 0px #000'">Leave Site</button>
+                    
                 </div>
+                
                 <style>
                     @keyframes bio-breathe {
-                        0% { transform: scale(0.5); opacity: 0.5; }
-                        50% { transform: scale(3.5); opacity: 1; }
-                        100% { transform: scale(0.5); opacity: 0.5; }
+                        0% { width: 360px; height: 360px; box-shadow: 0px 0px 0px #000; border-width: 4px; }
+                        50% { width: 540px; height: 540px; box-shadow: 24px 24px 0px #000; border-width: 12px; }
+                        100% { width: 360px; height: 360px; box-shadow: 0px 0px 0px #000; border-width: 4px; }
                     }
                 </style>
             `;
@@ -189,17 +214,20 @@
             document.documentElement.appendChild(overlay);
 
             const textEl = overlay.querySelector('#bio-breathe-text');
+            const leaveBtn = overlay.querySelector('#bio-leave-btn');
             
-            setTimeout(() => { textEl.style.opacity = '1'; }, 500);
+            leaveBtn.onclick = () => { history.back(); window.close(); };
+            
+            setTimeout(() => { textEl.style.opacity = '1'; }, 100);
 
-            let cycle = 0;
+            let cycle = 1;
             const interval = setInterval(() => {
                 textEl.style.opacity = '0';
                 setTimeout(() => {
                     textEl.innerText = lines[cycle % lines.length];
                     textEl.style.opacity = '1';
                     cycle++;
-                }, 1000);
+                }, 800);
             }, 5000);
 
             setTimeout(() => {
@@ -292,27 +320,28 @@
                 left: auto !important;
                 bottom: 20px !important;
                 padding: 8px 16px !important;
-                border-radius: 20px !important;
-                background: rgba(20, 10, 10, 0.85) !important; 
-                border: 1px solid rgba(255, 94, 91, 0.5) !important;
-                backdrop-filter: blur(10px) !important;
-                color: #FF5E5B !important;
-                font-family: sans-serif !important;
+                border-radius: 4px !important;
+                background: #ffffff !important; 
+                border: 2px solid #000000 !important;
+                color: #000000 !important;
+                font-family: 'Inter', system-ui, sans-serif !important;
                 font-size: 13px !important;
-                font-weight: 700 !important;
+                font-weight: 800 !important;
                 cursor: pointer !important;
                 z-index: 2147483647 !important;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
                 gap: 6px !important;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
+                box-shadow: 4px 4px 0px #000000 !important;
                 min-width: 80px !important;
-                transition: transform 0.2s;
+                transition: transform 0.1s !important;
             `;
             
-            this.pill.onmouseover = () => { this.pill.style.background = 'rgba(255, 94, 91, 0.2)'; this.pill.style.transform = 'scale(1.05)'; };
-            this.pill.onmouseout = () => { this.pill.style.background = 'rgba(20, 10, 10, 0.85)'; this.pill.style.transform = 'scale(1)'; };
+            this.pill.onmouseover = () => { this.pill.style.transform = 'translate(-2px, -2px)'; this.pill.style.boxShadow = '6px 6px 0px #000000'; };
+            this.pill.onmouseout = () => { this.pill.style.transform = 'translate(0, 0)'; this.pill.style.boxShadow = '4px 4px 0px #000000'; };
+            this.pill.onmousedown = () => { this.pill.style.transform = 'translate(4px, 4px)'; this.pill.style.boxShadow = '0px 0px 0px #000000'; };
+            this.pill.onmouseup = () => { this.pill.style.transform = 'translate(-2px, -2px)'; this.pill.style.boxShadow = '6px 6px 0px #000000'; };
             this.pill.onclick = (e) => {
                 e.stopPropagation();
                 this.showRealityCheck();
@@ -442,34 +471,36 @@
             const overlay = document.createElement('div');
             Object.assign(overlay.style, {
                 position: 'fixed', top: '0', left: '0', width: '100%', height: '100%',
-                background: 'rgba(5, 2, 2, 0.9)', backdropFilter: 'blur(25px)',
+                background: 'rgba(244, 244, 240, 0.95)',
+                backgroundImage: 'radial-gradient(#d1d1d1 1px, transparent 0)',
+                backgroundSize: '10px 10px',
                 zIndex: '2147483647', display: 'flex', justifyContent: 'center', alignItems: 'center',
                 flexDirection: 'column'
             });
             
             const card = document.createElement('div');
             Object.assign(card.style, {
-                background: 'rgba(30, 15, 15, 0.6)', padding: '60px 40px', borderRadius: '32px',
-                border: '1px solid rgba(255, 255, 255, 0.08)', width: '480px', textAlign: 'center',
-                boxShadow: '0 30px 80px rgba(0,0,0,0.6)', color: '#F5F5F7', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+                background: '#ffffff', padding: '60px 40px', borderRadius: '4px',
+                border: '2px solid #000000', width: '480px', textAlign: 'center',
+                boxShadow: '8px 8px 0px #000000', color: '#000000', fontFamily: "'Inter', system-ui, sans-serif"
             });
 
             card.innerHTML = `
                 <div style="font-size:64px; margin-bottom:24px; line-height:1; animation: float 3s ease-in-out infinite;">💀</div>
-                <h3 style="margin:0 0 12px 0; color:#FF5E5B; font-size:13px; text-transform:uppercase; letter-spacing:3px; font-weight:700; opacity:0.9;">Time Wasted</h3>
-                <div style="font-size:60px; font-weight:800; color:#fff; margin:0 0 32px 0; line-height:1; text-shadow: 0 0 30px rgba(255,94,91,0.2); font-variant-numeric: tabular-nums;">${this.formatTime(seconds)}</div>
-                <div style="background:rgba(255,255,255,0.03); border-radius:16px; padding:24px; margin-bottom:32px; border:1px solid rgba(255,255,255,0.05);">
-                    ${this.getAIInsight(seconds)}
+                <h3 style="margin:0 0 12px 0; color:#000000; font-size:13px; text-transform:uppercase; letter-spacing:3px; font-weight:800;">Time Wasted</h3>
+                <div style="font-size:60px; font-weight:800; color:#000000; margin:0 0 32px 0; line-height:1; font-variant-numeric: tabular-nums;">${this.formatTime(seconds)}</div>
+                <div style="background:#ffffff; border-radius:4px; padding:24px; margin-bottom:32px; border:2px solid #000000; box-shadow: 4px 4px 0px #000000;">
+                    ${this.getAIInsight(seconds).replace(/#E5E5EA|#F5F5F7/g, '#000000').replace(/#A1A1A6/g, '#555555')}
                 </div>
                 <button id="bio-go-work" style="
-                    background: linear-gradient(135deg, #FF5E5B, #FF3B30); color: #fff; border: none; width:100%;
-                    padding: 20px 0; border-radius: 16px; font-size: 18px; font-weight: 700; cursor: pointer;
-                    box-shadow: 0 8px 30px rgba(255, 69, 58, 0.3); transition: all 0.2s ease; letter-spacing: -0.01em;
-                ">CLOSE TAB</button>
+                    background: #ffffff; color: #000000; border: 2px solid #000000; width:100%;
+                    padding: 20px 0; border-radius: 4px; font-size: 18px; font-weight: 800; cursor: pointer;
+                    box-shadow: 4px 4px 0px #000000; transition: transform 0.1s, box-shadow 0.1s;
+                " onmouseover="this.style.transform='translate(-2px,-2px)';this.style.boxShadow='6px 6px 0px #000000'" onmouseout="this.style.transform='translate(0,0)';this.style.boxShadow='4px 4px 0px #000000'" onmousedown="this.style.transform='translate(4px,4px)';this.style.boxShadow='0px 0px 0px #000000'" onmouseup="this.style.transform='translate(-2px,-2px)';this.style.boxShadow='6px 6px 0px #000000'">CLOSE TAB</button>
                 <div id="bio-insight-close" style="
-                    margin-top: 24px; color: #666; font-size: 13px; font-weight: 500; cursor: pointer;
-                    transition: 0.2s; text-decoration: none; opacity: 0.7;
-                ">I give up, back to doomscrolling</div>
+                    margin-top: 24px; color: #555555; font-size: 13px; font-weight: 700; cursor: pointer;
+                    transition: 0.1s; text-decoration: underline; opacity: 1;
+                " onmouseover="this.style.color='#000'" onmouseout="this.style.color='#555'">I give up, back to doomscrolling</div>
                 <style>@keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0px); } }</style>
             `;
             
@@ -773,266 +804,10 @@
         }
     };
 
-    const Dashboard = {
-        state: { section: 'instagram' },
-        
-        init() {
-            if (ENV.SEARCH) {
-                const params = new URLSearchParams(window.location.search);
-                const query = (params.get('q') || params.get('p') || '').toLowerCase();
-                if (query.includes('blockitout')) {
-                    this.injectTrigger();
-                }
-            }
-            
-            if (window.location.href.includes('blockitout-dashboard')) {
-                this.render();
-            }
-        },
-
-        injectTrigger() {
-            if(document.getElementById('bio-pill')) return;
-            const btn = document.createElement('div');
-            btn.id = 'bio-pill';
-            Object.assign(btn.style, {
-                position: 'fixed', bottom: '50px', left: '50%', transform: 'translateX(-50%)',
-                padding: '16px 32px', borderRadius: '50px',
-                background: 'rgba(255, 94, 91, 0.15)',
-                border: '1px solid rgba(255, 94, 91, 0.4)',
-                backdropFilter: 'blur(20px)', webkitBackdropFilter: 'blur(20px)',
-                color: '#FF5E5B', boxShadow: '0 10px 40px rgba(0,0,0,0.5)',
-                fontFamily: 'system-ui, sans-serif', fontSize: '16px', fontWeight: '600',
-                cursor: 'pointer', zIndex: '2147483647', transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
-                display: 'flex', alignItems: 'center', gap: '10px', pointerEvents: 'auto'
-            });
-            btn.innerHTML = `<span>🛑</span> Open Dashboard`;
-            btn.onmouseover = () => { btn.style.transform = 'translateX(-50%) scale(1.05)'; btn.style.background = 'rgba(255, 94, 91, 0.25)'; };
-            btn.onmouseout = () => { btn.style.transform = 'translateX(-50%) scale(1)'; btn.style.background = 'rgba(255, 94, 91, 0.15)'; };
-            btn.addEventListener('click', (e) => {
-                e.preventDefault(); e.stopImmediatePropagation();
-                this.render();
-            }, true);
-            
-            if (document.body) document.body.appendChild(btn);
-            else document.addEventListener('DOMContentLoaded', () => document.body.appendChild(btn));
-        },
-
-        render() {
-            if (document.getElementById('bio-dashboard-overlay')) return;
-            
-            const css = `
-                #bio-dashboard-overlay {
-                    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-                    z-index: 2147483647; background: #050202; color: #F5F5F7;
-                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-                    display: flex; box-sizing: border-box; text-align: left;
-                }
-                #bio-dashboard-overlay * { box-sizing: border-box; font-family: inherit; }
-                #bio-dashboard-overlay .sidebar {
-                    width: 280px; height: 100%; border-right: 1px solid rgba(255, 94, 91, 0.15);
-                    background: rgba(10, 5, 5, 0.6); backdrop-filter: blur(50px);
-                    padding: 40px 20px; display: flex; flex-direction: column;
-                }
-                #bio-dashboard-overlay .logo { 
-                    font-size: 24px; font-weight: 800; letter-spacing: -0.02em; 
-                    margin-bottom: 40px; padding-left: 10px;
-                    background: linear-gradient(135deg, #FF5E5B, #ffb3b3);
-                    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-                }
-                #bio-dashboard-overlay .nav-item {
-                    padding: 14px 18px; border-radius: 12px; margin-bottom: 8px;
-                    cursor: pointer; color: #86868B; font-weight: 500; font-size: 15px;
-                    transition: all 0.2s; display: flex; align-items: center; gap: 12px;
-                }
-                #bio-dashboard-overlay .nav-item:hover { background: rgba(255, 94, 91, 0.05); color: #F5F5F7; }
-                #bio-dashboard-overlay .nav-item.active { 
-                    background: rgba(255, 94, 91, 0.15); color: #FF5E5B; 
-                    box-shadow: 0 0 0 1px rgba(255, 94, 91, 0.2) inset;
-                }
-                #bio-dashboard-overlay .main { flex: 1; padding: 60px 80px; overflow-y: auto; background-image: radial-gradient(circle at 0% 0%, rgba(255, 94, 91, 0.15), transparent 40%), radial-gradient(circle at 100% 100%, rgba(100, 20, 20, 0.2), transparent 40%); }
-                #bio-dashboard-overlay h2 { font-size: 32px; font-weight: 700; margin: 0 0 10px 0; letter-spacing: -0.02em; color: #F5F5F7; line-height: 1.2; }
-                #bio-dashboard-overlay p.sub { color: #86868B; margin: 0 0 40px 0; font-size: 16px; }
-                #bio-dashboard-overlay .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
-                #bio-dashboard-overlay .card {
-                    background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 94, 91, 0.15);
-                    border-radius: 20px; padding: 24px; transition: 0.3s;
-                    position: relative; overflow: hidden;
-                }
-                #bio-dashboard-overlay .card:hover { 
-                    background: rgba(255, 255, 255, 0.05); transform: translateY(-2px); 
-                    border-color: rgba(255, 94, 91, 0.25); 
-                }
-                #bio-dashboard-overlay .row { display: flex; justify-content: space-between; align-items: center; }
-                #bio-dashboard-overlay .lbl { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: #F5F5F7; }
-                #bio-dashboard-overlay .desc { font-size: 13px; color: #86868B; line-height: 1.4; }
-                #bio-dashboard-overlay .switch { position: relative; width: 44px; min-width: 44px; height: 26px; cursor: pointer; display: inline-block; margin: 0; flex-shrink: 0; }
-                #bio-dashboard-overlay .switch input { opacity: 0; width: 0; height: 0; margin: 0; padding: 0; }
-                #bio-dashboard-overlay .slider {
-                    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-                    background-color: rgba(255, 255, 255, 0.1); border-radius: 30px; transition: .4s;
-                }
-                #bio-dashboard-overlay .slider:before {
-                    position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px;
-                    background-color: white; border-radius: 50%; transition: .4s;
-                    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-                }
-                #bio-dashboard-overlay input:checked + .slider { background-color: #FF5E5B; }
-                #bio-dashboard-overlay input:checked + .slider:before { transform: translateX(18px); }
-                #bio-dashboard-overlay .bmc-btn {
-                    margin-top: auto; margin-bottom: 12px; padding: 12px 16px;
-                    text-align: center; background: #FFDD00; color: #000000;
-                    border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 700;
-                    line-height: 1.5; letter-spacing: 0.01em;
-                    transition: 0.2s; display: block;
-                    box-shadow: 0 2px 10px rgba(255, 221, 0, 0.3);
-                }
-                #bio-dashboard-overlay .bmc-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255, 221, 0, 0.4); }
-                #bio-dashboard-overlay .btn-exit {
-                    padding: 14px; text-align: center;
-                    background: rgba(255,255,255,0.05); color: #86868B;
-                    border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: 500;
-                    transition: 0.2s;
-                }
-                #bio-dashboard-overlay .btn-exit:hover { background: rgba(255,255,255,0.1); color: #F5F5F7; }
-                #bio-dashboard-overlay .bug-btn {
-                    margin-bottom: 12px; padding: 12px 16px;
-                    text-align: center; background: rgba(255,255,255,0.05); color: #86868B;
-                    border-radius: 12px; text-decoration: none; font-size: 14px; font-weight: 500;
-                    line-height: 1.5; transition: 0.2s; display: block; border: 1px solid rgba(255,255,255,0.1);
-                }
-                #bio-dashboard-overlay .bug-btn:hover { background: rgba(255,255,255,0.1); color: #F5F5F7; border-color: rgba(255,255,255,0.2); }
-            `;
-            
-            StyleInjector.add('bio-dash-styles', css);
-            
-            const overlay = document.createElement('div');
-            overlay.id = 'bio-dashboard-overlay';
-            overlay.innerHTML = `
-                <div class="sidebar">
-                    <div class="logo">BlockItOut</div>
-                    <div class="nav-item ${this.state.section === 'instagram' ? 'active' : ''}" id="bio-nav-ig">📸 Instagram</div>
-                    <div class="nav-item ${this.state.section === 'youtube' ? 'active' : ''}" id="bio-nav-yt">▶️ YouTube</div>
-                    <div class="nav-item ${this.state.section === 'global' ? 'active' : ''}" id="bio-nav-global">⚙️ Global</div>
-                    <a href="https://buymeacoffee.com/vigneshrapaka" target="_blank" class="bmc-btn">Buy me a coffee ☕</a>
-                    <a href="https://forms.gle/at1r3GyYpg2B1PEd6" target="_blank" class="bug-btn">Report Bugs 🐛</a>
-                    <div class="btn-exit" id="bio-btn-exit">Exit Dashboard</div>
-                </div>
-                <div class="main" id="bio-main-content"></div>
-            `;
-            
-            document.body.appendChild(overlay);
-            document.body.style.overflow = 'hidden';
-
-            this.bindEvents();
-            this.renderContent();
-        },
-
-        bindEvents() {
-            document.getElementById('bio-nav-ig').onclick = () => { this.state.section = 'instagram'; this.renderContent(); };
-            document.getElementById('bio-nav-yt').onclick = () => { this.state.section = 'youtube'; this.renderContent(); };
-            document.getElementById('bio-nav-global').onclick = () => { this.state.section = 'global'; this.renderContent(); };
-            document.getElementById('bio-btn-exit').onclick = () => {
-                document.getElementById('bio-dashboard-overlay').remove();
-                document.body.style.overflow = '';
-            };
-        },
-
-        renderContent() {
-            const content = document.getElementById('bio-main-content');
-            document.querySelectorAll('#bio-dashboard-overlay .nav-item').forEach(n => n.classList.remove('active'));
-            const map = { instagram: 'bio-nav-ig', youtube: 'bio-nav-yt', global: 'bio-nav-global' };
-            document.getElementById(map[this.state.section]).classList.add('active');
-
-            let html = '';
-            
-            const createCard = (title, desc, key) => `
-                <div class="card">
-                    <div class="row">
-                        <div>
-                            <div class="lbl">${title}</div>
-                            <div class="desc">${desc}</div>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" data-key="${key}" ${PREFS[key] ? 'checked' : ''}>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                </div>
-            `;
-
-            if (this.state.section === 'instagram') {
-                html = `
-                    <h2>Instagram Controls</h2>
-                    <p class="sub">Manage distractions on your feed.</p>
-                    <div class="grid">
-                        ${createCard('Time Tracker', 'Track wasted time & show reality checks.', 'igTimeMonitor')}
-                        ${createCard('Safe Feed', 'Hide Sponsored & Suggested posts (Safe Mode).', 'igSafeFeed')}
-                        ${createCard('Disable Double Tap', 'Prevent accidental likes on images.', 'igNoDoubleTap')}
-                        ${createCard('Hide Reels', 'Turn feed reels into black boxes & hide sidebar.', 'igHideReels')}
-                        ${createCard('Hide Stories', 'Remove the top stories tray.', 'igHideStories')}
-                        ${createCard('Hide Posts', 'Turn feed posts into black boxes.', 'igHidePosts')}
-                        ${createCard('Hide Metrics', 'Hide like counts, follower counts and comment counts.', 'igHideMetrics')}
-                        ${createCard('Blur Thumbnails', 'Blur feed images until you hover.', 'igBlurImages')}
-                        ${createCard('Focus Mode', 'Messaging Only. Hides Feed, Explore & Search.', 'igFocusMode')}
-                    </div>
-                `;
-            } else if (this.state.section === 'youtube') {
-                html = `
-                    <h2>YouTube Controls</h2>
-                    <p class="sub">Tailor your viewing experience.</p>
-                    <div class="grid">
-                        ${createCard('Ad Accelerator', 'Auto-skips & speeds up ads.', 'ytSkipAds')}
-                        ${createCard('Auto-Mute Ads', 'Silence the player during ads.', 'ytMuteAds')}
-                        ${createCard('Close Banners', 'Auto-close overlay banners.', 'ytHideBanners')}
-                        ${createCard('Theater Focus', 'Hide header and sidebar clutter.', 'ytTheaterMode')}
-                        ${createCard('Kill Autoplay', 'Force Autoplay toggle to stay OFF.', 'ytStopAutoplay')}
-                        ${createCard('Hide End Cards', 'Hide thumbnail cards at end of video.', 'ytCleanEndScreen')}
-                        ${createCard('Hide Shorts', 'Remove Shelves, Tabs & Redirect URLs.', 'ytHideShorts')}
-                        ${createCard('Hide Feed', 'Clean Homepage recommendations.', 'ytHideFeed')}
-                        ${createCard('Hide Comments', 'Remove discussion sections.', 'ytHideComments')}
-                        ${createCard('Focus Mode', 'No Sidebar, No Feed.', 'ytFocusMode')}
-                    </div>
-                `;
-            } else {
-                html = `
-                    <h2>Global Settings</h2>
-                    <p class="sub">Affects all supported platforms.</p>
-                    <div class="grid">
-                        ${createCard('Grayscale Mode', 'Reduce dopamine by removing all colors.', 'globalMono')}
-                        ${createCard('Intent Wall', 'Force yourself to type your intention before visiting.', 'globalIntentWall')}
-                        ${createCard('Breathe Wall', 'Force a 30s breathing exercise before entry.', 'globalBreatheWall')}
-                    </div>
-                    <div class="card" style="margin-top: 16px;">
-                        <div class="lbl">Sites to Restrict</div>
-                        <div class="desc" style="margin-bottom: 12px;">Type the websites you want to block here. You can separate them with commas or put each one on a new line.<br><br><b>Example:</b> reddit.com, twitter.com, tiktok.com</div>
-                        <textarea data-key="globalCustomSites" style="width: 100%; height: 80px; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); font-family: monospace; resize: vertical;">${PREFS.globalCustomSites}</textarea>
-                    </div>
-                `;
-            }
-
-            content.innerHTML = html;
-            content.querySelectorAll('input, textarea').forEach(input => {
-                input.onchange = (e) => {
-                    const key = e.target.dataset.key;
-                    if (e.target.type === 'checkbox') {
-                        PREFS[key] = e.target.checked;
-                    } else if (e.target.type === 'number') {
-                        PREFS[key] = parseInt(e.target.value) || 0;
-                    } else {
-                        PREFS[key] = e.target.value;
-                    }
-                    StorageManager.save(PREFS);
-                };
-            });
-        }
-    };
-
     const Monitor = new SessionMonitor();
     
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-        if (request.action === "open_dashboard") {
-            Dashboard.render();
-        } else if (request.action === "trigger_reality_check") {
+        if (request.action === "trigger_reality_check") {
             Monitor.showRealityCheck();
         }
     });
@@ -1040,6 +815,13 @@
     window.addEventListener('bio:settings-update', (e) => {
         PREFS = e.detail;
         if (ENV.IG) Monitor.toggle(PREFS.igTimeMonitor);
+    });
+    
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+        if (namespace === 'local' && changes.bio_pro_settings) {
+            PREFS = { ...DEFAULTS, ...changes.bio_pro_settings.newValue };
+            window.dispatchEvent(new CustomEvent('bio:settings-update', { detail: PREFS }));
+        }
     });
 
     StorageManager.load(() => {
@@ -1060,8 +842,6 @@
         } else if (ENV.YT) {
             YouTubeHandler.init();
             Monitor.init();
-        } else if (ENV.SEARCH) {
-            Dashboard.init();
         }
     });
 

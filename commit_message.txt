@@ -1,0 +1,7 @@
+Refactor(UI): Migrate to native extension popup and enhance mindfulness UI
+
+- Popup Migration: Extracted settings dashboard from DOM injection (`content.js`) to a secure, dedicated native extension popup (`popup.html`/`js`/`css`). This prevents styling conflicts with host pages and drastically improves security.
+- Real-time State Sync: Settings changes in the popup instantly sync via `chrome.storage.onChanged`, removing the need for manual page reloads or complex messaging architectures.
+- Security Enhancements: Patched a potential XSS vulnerability in the domain list renderer by using `textContent` instead of string-interpolated `innerHTML`.
+- Mindfulness UI Overhaul (Breathe Wall): Completely redesigned the "Breathe Wall" to match the extension's brutalist aesthetic. The static UI card was replaced with an immersive, rhythm-synced geometric animation (5s inhale, 5s exhale) that acts as the encapsulating container for the text and actions.
+- Cleanup & Docs: Removed obsolete search engine injection code (`ENV.SEARCH`), synchronized default blocklists, and updated the README with new usage instructions. Bumped manifest version to 1.1.0.

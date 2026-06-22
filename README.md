@@ -24,25 +24,20 @@ Block It Out sits in the middle. It’s a **DOM-modifier** that surgically remov
 
 ### 📸 Instagram: The "Quiet" Mode
 Turn Instagram into a portfolio viewer, not a dopamine drip.
-* **Safe Feed:** Automatically hides "Sponsored" posts, "Suggested for you," and ads. You only see who you actually follow.
-* **Blur Mode:** Blurs images by default. You have to hover to see them, which stops you from mindlessly scanning.
-* **Metric Hiding:** Removes like counts, follower numbers, and comment counts to stop the comparison game.
-* **Black Box Mode:** Turns addictive posts into static black boxes, keeping the layout intact but the distraction gone.
-* **No "Story Hopping":** Hides the top Stories tray.
+* **Core Distractions:** Hide Reels completely, use "Focus Mode" (Messaging Only), and enable "Safe Feed" to hide sponsored/suggested posts.
+* **Content Filters:** Hide Stories, turn posts into black boxes, or blur thumbnails until you hover over them.
+* **Metrics & Tracking:** Enable the Session Monitor to track wasted time, hide all like/follower counts, and disable the "Double Tap to Like" feature to prevent accidental engagement.
 
 ### ▶️ YouTube: Search & Destroy
 Use YouTube as a search engine, not a TV channel.
-* **Ad Accelerator:** Automatically mutes, speeds up (16x), and skips ads the instant they appear.
-* **Shorts Nuke:** Removes the Shorts shelf, the Shorts tab, and redirects Shorts URLs to the normal video player.
-* **Feed Wiper:** Cleans the homepage recommendations. You only see the search bar.
-* **Theater Focus:** Fades out the sidebar, comments, and header while you watch. They only reappear if you ask for them (hover).
-* **Stop Autoplay:** Forces the "Autoplay" toggle to stay OFF.
+* **Core Distractions:** Remove the Shorts shelf, hide the homepage feed entirely, or use Focus Mode to remove the sidebar and feed.
+* **Ad Controls:** Ad Accelerator (auto-skips and speeds up ads 16x), Auto-Mute Ads, and auto-close overlay banners.
+* **Player & Content:** Theater Focus (dims surrounding UI), Kill Autoplay, hide End Cards, and remove the Comments section.
 
-### 🧠 The "Reality Check"
-* **Session Monitor:** Tracks how long you've been scrolling. If you go too long, it covers the screen with a gentle reminder of what else you could have done (e.g., "You could have done 20 pushups").
-
-### ⚙️ Global
-* **Grayscale Mode:** Turns supported sites black and white. Science says this lowers the dopamine reward of colorful icons.
+### ⚙️ Global Settings & Walls
+* **Mindfulness Walls:** Force yourself to type an intention (Intent Wall) or wait 30 seconds (Breathe Wall) before entering distracting sites.
+* **Focus Modifiers:** Grayscale Mode reduces the dopamine reward of colorful icons by turning everything black and white.
+* **Restricted Sites:** A built-in list manager to block the specific websites that waste your time.
 
 <br>
 
@@ -59,13 +54,12 @@ Use YouTube as a search engine, not a TV channel.
 
 ## 🎮 How to Use
 
-BlockItOut runs in the background. When you want to change settings:
+BlockItOut runs securely in the background. When you want to change settings:
 
-1.  **Open Dashboard:**
-    * **Method A:** Click the BlockItOut icon <img src="icon16.png" height="16"/> in your browser toolbar.
-    * **Method B:** Type `blockitout` into Google, Bing, or DuckDuckGo. A magic button will appear at the bottom of the search results.
-2.  **Configure:** Flip the switches for the features you want.
-3.  **Save:** Changes are instant.
+1. Click the BlockItOut icon <img src="icon16.png" height="16"/> in your browser toolbar to open the settings popup.
+2. Navigate between the **Instagram**, **YouTube**, and **Global** tabs.
+3. Flip the switches for the features you want.
+4. Changes sync instantly across your open tabs—no page reload required!
 
 <br>
 
