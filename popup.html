@@ -1,64 +1,124 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
+  <head>
     <title>BlockItOut Settings</title>
-    <link rel="stylesheet" href="popup.css">
-</head>
-<body>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
     <div class="header">
-        <div class="logo-area">
-            <img src="icon48.png" alt="Logo" class="logo-img" id="logo-icon">
-            <h1>BlockItOut</h1>
-        </div>
-        <div class="version-badge">v1.0.0</div>
+      <div class="logo-area">
+        <img src="icon48.png" alt="Logo" class="logo-img" id="logo-icon" />
+        <h1>BlockItOut</h1>
+      </div>
+      <div class="version-badge">v1.0.0</div>
     </div>
-    
+
     <div class="container">
-        <div class="segmented-control tabs">
-            <button class="tab active" data-tab="instagram">Instagram</button>
-            <button class="tab" data-tab="youtube">YouTube</button>
-            <button class="tab" data-tab="global">Global</button>
-        </div>
-        
-        <div class="content" id="content">
-            <!-- Content injected by JS -->
-        </div>
+      <div class="segmented-control tabs">
+        <button class="tab active" data-tab="instagram">Instagram</button>
+        <button class="tab" data-tab="youtube">YouTube</button>
+        <button class="tab" data-tab="global">Global</button>
+      </div>
 
-        <div class="card-group support-card">
-          <div class="support-container">
-            <div class="support-text-group">
-              <h3>Enjoying BlockItOut?</h3>
-              <p>I'm a uni student. A coffee helps!</p>
-            </div>
-            <a href="https://buymeacoffee.com/vigneshrapaka" target="_blank" class="support-link">
-              <button class="btn-support">
-                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
-                <span>Support Me</span>
-              </button>
-            </a>
+      <div class="content" id="content">
+        <!-- Content injected by JS -->
+      </div>
+
+      <div class="card-group support-card">
+        <div class="support-container">
+          <div class="support-text-group">
+            <h3>Enjoying BlockItOut?</h3>
+            <p>I'm a uni student. A coffee helps!</p>
+          </div>
+          <a
+            href="https://buymeacoffee.com/vigneshrapaka"
+            target="_blank"
+            class="support-link"
+          >
+            <button class="btn-support">
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="14"
+                height="14"
+              >
+                <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                <line x1="6" y1="1" x2="6" y2="4"></line>
+                <line x1="10" y1="1" x2="10" y2="4"></line>
+                <line x1="14" y1="1" x2="14" y2="4"></line>
+              </svg>
+              <span>Support Me</span>
+            </button>
+          </a>
+        </div>
+      </div>
+
+      <div class="card-group support-card">
+        <div class="support-container" style="padding: 12px 16px">
+          <div class="support-text-group">
+            <h3 style="font-size: 13px">Backup & Restore</h3>
+            <p style="font-size: 11px">Save or load your settings.</p>
+          </div>
+          <div style="display: flex; gap: 8px">
+            <button
+              id="btn-export"
+              class="btn-dark"
+              style="
+                height: 28px;
+                font-size: 11px;
+                padding: 0 12px;
+                box-shadow: 2px 2px 0px rgba(0, 0, 0, 1);
+              "
+            >
+              Export
+            </button>
+            <button
+              id="btn-import"
+              class="btn-dark"
+              style="
+                height: 28px;
+                font-size: 11px;
+                padding: 0 12px;
+                background: #fff;
+                color: #000;
+                box-shadow: 2px 2px 0px rgba(0, 0, 0, 1);
+              "
+            >
+              Import
+            </button>
+            <input
+              type="file"
+              id="import-file"
+              accept=".json"
+              style="display: none"
+            />
           </div>
         </div>
+      </div>
 
-        <div class="card-group support-card">
-          <div class="support-container" style="padding: 12px 16px;">
-            <div class="support-text-group">
-              <h3 style="font-size: 13px;">Backup & Restore</h3>
-              <p style="font-size: 11px;">Save or load your settings.</p>
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button id="btn-export" class="btn-dark" style="height: 28px; font-size: 11px; padding: 0 12px; box-shadow: 2px 2px 0px rgba(0,0,0,1);">Export</button>
-              <button id="btn-import" class="btn-dark" style="height: 28px; font-size: 11px; padding: 0 12px; background: #fff; color: #000; box-shadow: 2px 2px 0px rgba(0,0,0,1);">Import</button>
-              <input type="file" id="import-file" accept=".json" style="display: none;">
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-top: 16px;">
-            <a href="https://forms.gle/at1r3GyYpg2B1PEd6" target="_blank" style="display:block; text-align:center; color:#555; font-size:12px; font-weight:700; text-decoration:underline;">Report a Bug</a>
-        </div>
+      <div style="margin-top: 16px">
+        <a
+          href="https://forms.gle/at1r3GyYpg2B1PEd6"
+          target="_blank"
+          style="
+            display: block;
+            text-align: center;
+            color: #555;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: underline;
+          "
+          >Report a Bug</a
+        >
+      </div>
     </div>
 
     <script src="popup.js"></script>
-
-</body>
+  </body>
 </html>

@@ -15,35 +15,41 @@ We don't block the sites; we just make them behave.
 Most blockers are all-or-nothing. You either block YouTube entirely (and can't watch that tutorial you need), or you keep it open and lose 2 hours to Shorts.
 
 Block It Out sits in the middle. It’s a **DOM-modifier** that surgically removes the slot-machine mechanics while keeping the utility intact.
-* **Developers:** It’s lightweight, vanilla JS, and runs locally.
-* **Users:** It saves your brain cells without requiring you to delete your accounts.
+
+- **Developers:** It’s lightweight, vanilla JS, and runs locally.
+- **Users:** It saves your brain cells without requiring you to delete your accounts.
 
 <br>
 
 ## 🛠 Features (v1.0.0)
 
 ### 📸 Instagram: The "Quiet" Mode
+
 Turn Instagram into a portfolio viewer, not a dopamine drip.
-* **Core Distractions:** Hide Reels completely, use "Focus Mode" (Messaging Only), and enable "Safe Feed" to hide sponsored/suggested posts.
-* **Content Filters:** Hide Stories, turn posts into black boxes, or blur thumbnails until you hover over them.
-* **Metrics & Tracking:** Enable the Session Monitor to track wasted time, hide all like/follower counts, and disable the "Double Tap to Like" feature to prevent accidental engagement.
+
+- **Core Distractions:** Hide Reels completely, use "Focus Mode" (Messaging Only), and enable "Safe Feed" to hide sponsored/suggested posts.
+- **Content Filters:** Hide Stories, turn posts into black boxes, or blur thumbnails until you hover over them.
+- **Metrics & Tracking:** Enable the Session Monitor to track wasted time, hide all like/follower counts, and disable the "Double Tap to Like" feature to prevent accidental engagement.
 
 ### ▶️ YouTube: Search & Destroy
+
 Use YouTube as a search engine, not a TV channel.
-* **Core Distractions:** Remove the Shorts shelf, hide the homepage feed entirely, or use Focus Mode to remove the sidebar and feed.
-* **Ad Controls:** Ad Accelerator (auto-skips and speeds up ads 16x), Auto-Mute Ads, and auto-close overlay banners.
-* **Player & Content:** Theater Focus (dims surrounding UI), Kill Autoplay, hide End Cards, and remove the Comments section.
+
+- **Core Distractions:** Remove the Shorts shelf, hide the homepage feed entirely, or use Focus Mode to remove the sidebar and feed.
+- **Ad Controls:** Ad Accelerator (auto-skips and speeds up ads 16x), Auto-Mute Ads, and auto-close overlay banners.
+- **Player & Content:** Theater Focus (dims surrounding UI), Kill Autoplay, hide End Cards, and remove the Comments section.
 
 ### ⚙️ Global Settings & Walls
-* **Mindfulness Walls:** Force yourself to type an intention (Intent Wall) or wait 30 seconds (Breathe Wall) before entering distracting sites.
-* **Focus Modifiers:** Grayscale Mode reduces the dopamine reward of colorful icons by turning everything black and white.
-* **Restricted Sites:** A built-in list manager to block the specific websites that waste your time.
+
+- **Mindfulness Walls:** Force yourself to type an intention (Intent Wall) or wait 30 seconds (Breathe Wall) before entering distracting sites.
+- **Focus Modifiers:** Grayscale Mode reduces the dopamine reward of colorful icons by turning everything black and white.
+- **Restricted Sites:** A built-in list manager to block the specific websites that waste your time.
 
 <br>
 
 ## 📦 How to Install (Developer Mode)
 
-*Note: This is currently a manual install for privacy and transparency.*
+_Note: This is currently a manual install for privacy and transparency._
 
 1.  **Download:** Clone this repo or download the ZIP and extract it.
 2.  **Open Chrome Extensions:** Type `chrome://extensions` in your address bar.
@@ -64,10 +70,11 @@ BlockItOut runs securely in the background. When you want to change settings:
 <br>
 
 ## 💻 Tech Stack
-* **Core:** Vanilla JavaScript (ES6+)
-* **Architecture:** Chrome Extension Manifest V3
-* **Storage:** `chrome.storage.local` for persisting settings
-* **Privacy:** Zero data collection. Everything stays on your machine.
+
+- **Core:** Vanilla JavaScript (ES6+)
+- **Architecture:** Chrome Extension Manifest V3
+- **Storage:** `chrome.storage.local` for persisting settings
+- **Privacy:** Zero data collection. Everything stays on your machine.
 
 <br>
 
@@ -84,8 +91,8 @@ I'm a university student coding this between exams. If this tool saved you from 
 **Educational & Personal Productivity Use Only.**
 This software is provided "as is." It modifies the DOM of websites locally on your machine to improve user experience.
 
-* **Commercial Use:** Prohibited without a license.
-* **Modification:** Feel free to tweak the code for your own personal use.
-* **Disclaimer:** Use at your own risk. We are not responsible if platforms update their code and break a feature.
+- **Commercial Use:** Prohibited without a license.
+- **Modification:** Feel free to tweak the code for your own personal use.
+- **Disclaimer:** Use at your own risk. We are not responsible if platforms update their code and break a feature.
 
 [View Full License](LICENSE)
