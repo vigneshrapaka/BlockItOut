@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Block It Out - Hide Shorts, Reels & Feeds",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Stop doomscrolling. Block YouTube Shorts, Instagram Reels, and addictive feeds to reclaim your focus. Perfect for ADHD management.",
   "permissions": ["storage", "activeTab"],
   "host_permissions": ["<all_urls>"],

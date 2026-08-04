@@ -14,20 +14,28 @@
   box-sizing: border-box;
 }
 
-html,
-body {
-  width: 100%;
+html {
+  width: 400px;
   min-width: 400px;
+  max-width: 400px;
   margin: 0;
   padding: 0;
+  background-color: var(--bg-color);
+  overflow-x: hidden;
 }
 
 body {
+  width: 400px;
+  min-width: 400px;
+  max-width: 400px;
+  margin: 0;
+  padding: 0;
   background-color: var(--bg-color);
   font-family: var(--font-family);
   color: var(--text-main);
   background-image: radial-gradient(#d1d1d1 1px, transparent 0);
   background-size: 10px 10px;
+  overflow-x: hidden;
 }
 
 .header {
